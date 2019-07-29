@@ -13,6 +13,12 @@
             "role": "Developer"
         },
         {
+            "name": "Marcio de Souza",
+            "email": "marcio.ti.souza@gmail.com",
+            "homepage": "http://www.nfephp.org",
+            "role": "Developer"
+        },
+        {
             "name": "Comunidade NFePHP",
             "homepage": "https://github.com/nfephp-org/sped-nfse-ginfes/graphs/contributors"
         }

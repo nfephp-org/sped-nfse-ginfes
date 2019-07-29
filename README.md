@@ -48,7 +48,7 @@ Caso você encontre algum problema relativo a segurança, por favor envie um ema
 ## Credits
 
 - Roberto L. Machado (Owner)
-- Marcio de Souza (Colaborador)
+- Marcio de Souza (Desenvolvedor)
 
 ## License
 
