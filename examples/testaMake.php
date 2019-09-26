@@ -14,8 +14,8 @@ $config = [
    "cnpj" => "11222333444455",
    "inscricaomunicipal" => "11223",
    "codigomunicipio" => "3518800",
-   "schemes" => "V3",
-   "versao" => "3.00"
+   "schemes" => "Ginfes_V3",
+   "versao" => "v03"
 ];
 
 $configJson = json_encode($config);
@@ -47,7 +47,6 @@ $std->ValorCsll = 0.00;
 $std->IssRetido = 2;
 $std->ValorIss = 2.32;
 $std->ValorIssRetido = 0.00;
-$std->OutrasRetencoes = 0.00;
 $std->OutrasRetencoes = 0.00;
 $std->BaseCalculo = 116.00;
 $std->Aliquota = 0.0200;
