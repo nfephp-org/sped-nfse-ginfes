@@ -15,7 +15,9 @@ namespace NFePHP\NFSeGinfes;
  * @link      http://github.com/nfephp-org/sped-nfse-ginfes for the canonical source repository
  */
 
+use NFePHP\Common\Keys;
 use NFePHP\Common\DOMImproved as Dom;
+use NFePHP\Common\Strings;
 use stdClass;
 use RuntimeException;
 use InvalidArgumentException;
@@ -106,15 +108,15 @@ class Make
     {
         $this->config = json_decode($configJson);
         $this->dom = new Dom('1.0', 'UTF-8');
-        $this->dom->preserveWhiteSpace = true;
+        $this->dom->preserveWhiteSpace = false;
         $this->dom->formatOutput = false;
 		$this->LoteRps = $this->dom->createElement("LoteRps");
 		$this->InfRps = $this->dom->createElement("tipos:InfRps");
     }
 
     /**
-     * Returns xml string and assembly it is necessary
-     * @return string
+     * Retorns the xml
+     * @return xml
      */
     public function getXML()
     {
@@ -123,6 +125,12 @@ class Make
         }
         return $this->xml;
     }
+
+    /**
+     * buildNFSe
+     * tag NFSe
+     * @return DOMElement
+     */
 
     protected function buildNFSe()
     {
@@ -133,11 +141,11 @@ class Make
         return $this->NFSe;
     }
 
-    /**
+   /**
      * Call method of xml assembly. For compatibility only.
      * @return boolean
      */
-    public function montaNFSe()
+   public function montaNFSe()
     {
         return $this->monta();
     }
@@ -158,20 +166,18 @@ class Make
         //cria a tag raiz da NFSe
         $this->buildNFSe();
         
-        $this->LoteRps->appendChild($this->NumeroLote);
-        $this->LoteRps->appendChild($this->Cnpj);
-        $this->LoteRps->appendChild($this->InscricaoMunicipal);
-        $this->LoteRps->appendChild($this->QuantidadeRps);
-
+        $this->dom->appChild($this->LoteRps, $this->NumeroLote, 'Falta tag "LoteRps"');
+        $this->dom->appChild($this->LoteRps, $this->Cnpj, 'Falta tag "LoteRps"');
+        $this->dom->appChild($this->LoteRps, $this->InscricaoMunicipal, 'Falta tag "LoteRps"');
+        $this->dom->appChild($this->LoteRps, $this->QuantidadeRps, 'Falta tag "LoteRps"');
 		
         $this->ListaRps = $this->dom->createElement("tipos:ListaRps");
         $this->Rps = $this->dom->createElement("tipos:Rps");
 
-		$this->Rps->appendChild($this->InfRps);
-		$this->ListaRps->appendChild($this->Rps);
-		$this->LoteRps->appendChild($this->ListaRps);
-		
-        $this->dom->appChild($this->NFSe, $this->LoteRps, 'Falta tag "LoteRps"');
+        $this->dom->appChild($this->Rps, $this->InfRps, 'Falta tag "Rps"');
+        $this->dom->appChild($this->ListaRps, $this->Rps, 'Falta tag "ListaRps"');
+        $this->dom->appChild($this->LoteRps, $this->ListaRps, 'Falta tag "LoteRps"');
+        $this->dom->appChild($this->NFSe, $this->LoteRps, 'Falta tag "NFSe"');
         // tag NFSe
         $this->dom->appendChild($this->NFSe);
         $this->xml = $this->dom->saveXML();
@@ -256,11 +262,11 @@ class Make
         $Serie = $this->dom->createElement("tipos:Serie",$std->Serie);
         $Tipo = $this->dom->createElement("tipos:Tipo",$std->Tipo);
         
-		$this->IdentificacaoRps->appendChild($Numero);
-		$this->IdentificacaoRps->appendChild($Serie);
-		$this->IdentificacaoRps->appendChild($Tipo);
+        $this->dom->appChild($this->IdentificacaoRps, $Numero, 'Falta tag "IdentificacaoRps"');
+        $this->dom->appChild($this->IdentificacaoRps, $Serie, 'Falta tag "IdentificacaoRps"');
+        $this->dom->appChild($this->IdentificacaoRps, $Tipo, 'Falta tag "IdentificacaoRps"');
 
-		$this->InfRps->appendChild($this->IdentificacaoRps);
+        $this->dom->appChild($this->InfRps, $this->IdentificacaoRps, 'Falta tag "InfRps"');
 		
 		$DataEmissao = $this->dom->createElement("tipos:DataEmissao", date("Y-m-d") . "T" . date("H:i:s")); 
 		$NaturezaOperacao = $this->dom->createElement("tipos:NaturezaOperacao", $std->NaturezaOperacao);
@@ -269,12 +275,12 @@ class Make
 		$IncentivadorCultural = $this->dom->createElement("tipos:IncentivadorCultural", $std->IncentivadorCultural);
 		$Status = $this->dom->createElement("tipos:Status", $std->Status);
 
-		$this->InfRps->appendChild($DataEmissao);
-		$this->InfRps->appendChild($NaturezaOperacao);
-		$this->InfRps->appendChild($RegimeEspecialTributacao);
-		$this->InfRps->appendChild($OptanteSimplesNacional);
-		$this->InfRps->appendChild($IncentivadorCultural);
-		$this->InfRps->appendChild($Status);
+        $this->dom->appChild($this->InfRps, $DataEmissao, 'Falta tag "InfRps"');
+        $this->dom->appChild($this->InfRps, $NaturezaOperacao, 'Falta tag "InfRps"');
+        $this->dom->appChild($this->InfRps, $RegimeEspecialTributacao, 'Falta tag "InfRps"');
+        $this->dom->appChild($this->InfRps, $OptanteSimplesNacional, 'Falta tag "InfRps"');
+        $this->dom->appChild($this->InfRps, $IncentivadorCultural, 'Falta tag "InfRps"');
+        $this->dom->appChild($this->InfRps, $Status, 'Falta tag "InfRps"');
         
         return $this->InfRps ;
 	}
@@ -302,7 +308,7 @@ class Make
         $ValorIssRetido = $this->dom->createElement("tipos:ValorIssRetido",number_format($std->ValorIssRetido,2,'.',''));
         $OutrasRetencoes = $this->dom->createElement("tipos:OutrasRetencoes",number_format($std->OutrasRetencoes,2,'.',''));
         $BaseCalculo = $this->dom->createElement("tipos:BaseCalculo",number_format($std->BaseCalculo,2,'.',''));
-        $Aliquota = $this->dom->createElement("tipos:Aliquota",number_format($std->Aliquota,4,'.',''));
+        $Aliquota = $this->dom->createElement("tipos:Aliquota",number_format($std->Aliquota/100,2,'.',''));
         $ValorLiquidoNfse = $this->dom->createElement("tipos:ValorLiquidoNfse",number_format($std->ValorLiquidoNfse,2,'.',''));
         $DescontoIncondicionado = $this->dom->createElement("tipos:DescontoIncondicionado",number_format($std->DescontoIncondicionado,2,'.',''));
         $DescontoCondicionado = $this->dom->createElement("tipos:DescontoCondicionado",number_format($std->DescontoCondicionado,2,'.',''));
@@ -312,30 +318,31 @@ class Make
         $Discriminacao = $this->dom->createElement("tipos:Discriminacao",$std->Discriminacao);
         $CodigoMunicipio = $this->dom->createElement("tipos:CodigoMunicipio",$this->config->codigomunicipio);
 
-		$this->Valores->appendChild($ValorServicos);
-		$this->Valores->appendChild($ValorDeducoes);
-		$this->Valores->appendChild($ValorPis);
-		$this->Valores->appendChild($ValorCofins);
-		$this->Valores->appendChild($ValorInss);
-		$this->Valores->appendChild($ValorIr);
-		$this->Valores->appendChild($ValorCsll);
-		$this->Valores->appendChild($IssRetido);
-		$this->Valores->appendChild($ValorIss);
-		$this->Valores->appendChild($ValorIssRetido);
-		$this->Valores->appendChild($OutrasRetencoes);
-		$this->Valores->appendChild($BaseCalculo);
-		$this->Valores->appendChild($Aliquota);
-		$this->Valores->appendChild($ValorLiquidoNfse);
-		$this->Valores->appendChild($DescontoIncondicionado);
-		$this->Valores->appendChild($DescontoCondicionado);
+        $this->dom->appChild($this->Valores, $ValorServicos, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorDeducoes, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorPis, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorCofins, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorInss, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorIr, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorCsll, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $IssRetido, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorIss, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorIssRetido, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $OutrasRetencoes, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $BaseCalculo, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $Aliquota, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $ValorLiquidoNfse, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $DescontoIncondicionado, 'Falta tag "Valores"');
+        $this->dom->appChild($this->Valores, $DescontoCondicionado, 'Falta tag "Valores"');
 
-		$this->Servico->appendChild($this->Valores);
-		$this->Servico->appendChild($ItemListaServico);
-		$this->Servico->appendChild($CodigoTributacaoMunicipio);
-		$this->Servico->appendChild($Discriminacao);
-		$this->Servico->appendChild($CodigoMunicipio);
+        $this->dom->appChild($this->Servico, $this->Valores, 'Falta tag "Servico"');
 		
-		$this->InfRps->appendChild($this->Servico);
+        $this->dom->appChild($this->Servico, $ItemListaServico, 'Falta tag "Servico"');
+        $this->dom->appChild($this->Servico, $CodigoTributacaoMunicipio, 'Falta tag "Servico"');
+        $this->dom->appChild($this->Servico, $Discriminacao, 'Falta tag "DServico"');
+        $this->dom->appChild($this->Servico, $CodigoMunicipio, 'Falta tag "Servico"');
+		
+        $this->dom->appChild($this->InfRps, $this->Servico, 'Falta tag "InfRps"');
         $this->buildPrestador();
 	}
 
@@ -350,11 +357,9 @@ class Make
         
         $Cnpj = $this->dom->createElement("tipos:Cnpj",$this->config->cnpj);
         $InscricaoMunicipal = $this->dom->createElement("tipos:InscricaoMunicipal",$this->config->inscricaomunicipal);
-		$this->Prestador->appendChild($Cnpj);
-		$this->Prestador->appendChild($InscricaoMunicipal);
-		
-		$this->InfRps->appendChild($this->Prestador);
-
+        $this->dom->appChild($this->Prestador, $Cnpj, 'Falta tag "Prestador"');
+        $this->dom->appChild($this->Prestador, $InscricaoMunicipal, 'Falta tag "Prestador"');
+        $this->dom->appChild($this->InfRps, $this->Prestador, 'Falta tag "InfRps"');
 	}
 
     /**
@@ -382,24 +387,23 @@ class Make
         $Cep = $this->dom->createElement("tipos:Cep",$std->Cep);
         $Email = $this->dom->createElement("tipos:Email",$std->Email);
 
-        $CpfCnpj->appendChild($Cnpj);
-        
-        $IdentificacaoTomador->appendChild($CpfCnpj);
-        
-        $tagsEndereco->appendChild($Endereco);
-        $tagsEndereco->appendChild($Numero);
-        $tagsEndereco->appendChild($Bairro);
-        $tagsEndereco->appendChild($CodigoMunicipio);
-        $tagsEndereco->appendChild($Uf);
-        $tagsEndereco->appendChild($Cep);
+        $this->dom->appChild($CpfCnpj, $Cnpj, 'Falta tag "CpfCnpj"');
+        $this->dom->appChild($IdentificacaoTomador, $CpfCnpj, 'Falta tag "IdentificacaoTomador"');
+        $this->dom->appChild($tagsEndereco, $Endereco, 'Falta tag "tagsEndereco"');
+        $this->dom->appChild($tagsEndereco, $Numero, 'Falta tag "tagsEndereco"');
+        $this->dom->appChild($tagsEndereco, $Bairro, 'Falta tag "tagsEndereco"');
+        $this->dom->appChild($tagsEndereco, $CodigoMunicipio, 'Falta tag "tagsEndereco"');
+        $this->dom->appChild($tagsEndereco, $Uf, 'Falta tag "tagsEndereco"');
+        $this->dom->appChild($tagsEndereco, $Cep, 'Falta tag "tagsEndereco"');
 
-        $Contato->appendChild($Email);
+        $this->dom->appChild($Contato, $Email, 'Falta tag "Contato"');
 
-        $this->Tomador->appendChild($IdentificacaoTomador);
-        $this->Tomador->appendChild($RazaoSocial);
-        $this->Tomador->appendChild($tagsEndereco);
-        $this->Tomador->appendChild($Contato);
+        $this->dom->appChild($this->Tomador, $IdentificacaoTomador, 'Falta tag "Tomador"');
+        $this->dom->appChild($this->Tomador, $RazaoSocial, 'Falta tag "Tomador"');
+        $this->dom->appChild($this->Tomador, $tagsEndereco, 'Falta tag "Tomador"');
+        $this->dom->appChild($this->Tomador, $Contato, 'Falta tag "Tomador"');
 
+        $this->dom->appChild($this->InfRps, $this->Tomador, 'Falta tag "InfRps"');
         $this->InfRps->appendChild($this->Tomador);
 
     }
