@@ -688,12 +688,12 @@ abstract class SoapBase implements SoapInterface
 		$nPosFimTag = 0 ;
 		$cRet = '' ;
 		$cXml = $cStringXML ;
-		if( Vazio($cXml) ){
+		if( Empty($cXml) ){
 			return $cRet ;
 		}
 		if( At('=',$cElemento) < 0 ){
-			$InicioDoDado = iif( Vazio($cElemento2),$carac01.$cElemento.$carac02 , $carac01.$cElemento ) ;
-			$FinalDoDado  = iif( Vazio($cElemento2),$carac01."/".$cElemento.$carac02,$carac01.'/'.$cElemento2.$carac02) ;
+			$InicioDoDado = iif( Empty($cElemento2),$carac01.$cElemento.$carac02 , $carac01.$cElemento ) ;
+			$FinalDoDado  = iif( Empty($cElemento2),$carac01."/".$cElemento.$carac02,$carac01.'/'.$cElemento2.$carac02) ;
 		}else{
 			$InicioDoDado = $cElemento ;
 			$FinalDoDado  = $cElemento2 ;
@@ -731,7 +731,7 @@ abstract class SoapBase implements SoapInterface
 		if( $nPosIni == -1 ){
 			return $cRet ;
 		}
-		if( !Vazio($cElemento2) && $nPosIni >= 0 ){
+		if( !Empty($cElemento2) && $nPosIni >= 0 ){
 			$cXml = Subs($cXml,$nPosIni) ;
 			$nPosIni = 1 ;
 		}
@@ -753,4 +753,32 @@ abstract class SoapBase implements SoapInterface
 		$cRet = Subs($cXml,$nPosIni,$nPosFim-$nPosIni) ;
 	    return $cRet ;
 	}
+	
+	protected function At($cSubs,$cString){
+		$nPos = strpos($cString , $cSubs ) ;
+		if( $nPos === false ){
+			$nPos = -1 ;
+		}
+		return $nPos ;
+	}	
+
+	protected function Subs($string,$ninicio,$nquant = 0){
+		if( $nquant > 0 ){
+			if( $ninicio > 0 ){
+				$cTexto = substr($string, $ninicio-1 , $nquant ) ;
+			}else{
+				$cTexto = substr($string, $ninicio , $nquant ) ;
+			}
+		}elseif( $nquant == 0  ){
+			if( $ninicio > 0 ){
+				$cTexto = substr($string, $ninicio-1 ) ;
+			}else{
+				$cTexto = substr($string, $ninicio ) ;
+			}
+		}else{
+			$cTexto = substr($string, $ninicio , $nquant) ;
+		}
+		return $cTexto ;
+	}
+	
 }
