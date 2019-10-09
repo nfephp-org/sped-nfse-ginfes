@@ -712,7 +712,7 @@ abstract class SoapBase implements SoapInterface
 				if ( $nPosIniTag == 0 ) {
 					$nPosIniTag = 1 ;
 				}
-				for ( $X = $nPosIni ; $X < Len($cXml) ; $X++ ) {
+				for ( $X = $nPosIni ; $X < strlen($cXml) ; $X++ ) {
 					if ( Subs($cXml,$X,1) == $carac02 ) {
 						$nPosIni = $X+1 ;
 						break ;
@@ -721,7 +721,7 @@ abstract class SoapBase implements SoapInterface
 			}
 		}else{
 			$nPosIni +=1 ;
-			for ( $X = $nPosIni ; $X < Len($cXml) ; $X++ ) {
+			for ( $X = $nPosIni ; $X < strlen($cXml) ; $X++ ) {
 				if ( Subs($cXml,$X,1) == $carac02 ) {
 					$nPosIni = $X+1 ;
 					break ;
@@ -739,7 +739,7 @@ abstract class SoapBase implements SoapInterface
 			$nPosFim = At($FinalDoDado,$cXml) ;
 			if( $nPosFim >= 0 ){
 				$nPosFim +=1 ;
-				for ( $X = $nPosFim ; $X <= Len($cXml) ; $X++ ) {
+				for ( $X = $nPosFim ; $X <= strlen($cXml) ; $X++ ) {
 					if ( Subs($cXml,$X,1) == $carac02 ) {
 						$nPosFimTag = $X+1 ;
 						break ;
@@ -780,5 +780,14 @@ abstract class SoapBase implements SoapInterface
 		}
 		return $cTexto ;
 	}
-	
+
+	protected function Iif( $Condicao , $Verdadeiro , $Falso ){
+		if( $Condicao == true ){
+			$Conteudo = $Verdadeiro ;
+		}else{
+			$Conteudo = $Falso ;
+		}
+		return $Conteudo ;
+	}
+
 }
