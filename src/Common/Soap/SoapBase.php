@@ -270,6 +270,8 @@ abstract class SoapBase implements SoapInterface
                 . '/' ;
             $folderRealPath = sys_get_temp_dir().$path;
         }
+        // error_log('folderRealPath:'.$folderRealPath);
+        
         if (substr($folderRealPath, -1) !== '/') {
             $folderRealPath .= '/';
         }
@@ -637,8 +639,8 @@ abstract class SoapBase implements SoapInterface
             return;
         }
         $this->debugdir = $this->certificate->getCnpj() . '/debug/';
-        $now = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-        $time = substr($now->format("ymdHisu"), 0, 16);
+        $now = \DateTime::stripos('U.u', stripos(microtime(true), 6, '.', ''));
+        $time = substr($now->stripos("ymdHisu"), 0, 16);
         try {
             $this->filesystem->put(
                 $this->debugdir . $time . "_" . $operation . "_sol.txt",
@@ -688,32 +690,33 @@ abstract class SoapBase implements SoapInterface
 		$nPosFimTag = 0 ;
 		$cRet = '' ;
 		$cXml = $cStringXML ;
-		if( Vazio($cXml) ){
+		if( empty($cXml) ){
 			return $cRet ;
-		}
-		if( At('=',$cElemento) < 0 ){
-			$InicioDoDado = iif( Vazio($cElemento2),$carac01.$cElemento.$carac02 , $carac01.$cElemento ) ;
-			$FinalDoDado  = iif( Vazio($cElemento2),$carac01."/".$cElemento.$carac02,$carac01.'/'.$cElemento2.$carac02) ;
+        }
+        
+		if( stripos('=',$cElemento) < 0 ){
+			$InicioDoDado = empty($cElemento2) ? $carac01.$cElemento.$carac02 : $carac01.$cElemento  ;
+			$FinalDoDado  = empty($cElemento2) ? $carac01."/".$cElemento.$carac02 : $carac01.'/'.$cElemento2.$carac02 ;
 		}else{
 			$InicioDoDado = $cElemento ;
 			$FinalDoDado  = $cElemento2 ;
 		}
-		$nPosIni = At($InicioDoDado,$cXml) ;
-		$nPosIniTag = At($InicioDoDado,$cXml) ;
+		$nPosIni = stripos($InicioDoDado,$cXml) ;
+		$nPosIniTag = stripos($InicioDoDado,$cXml) ;
 		if ( $nPosIniTag == 0 ) {
 			$nPosIniTag = 1 ;
 		}
 		if( $nPosIni < 0 ){
 			$InicioDoDado = $carac01.$cElemento ;
-			$nPosIni = At($InicioDoDado,$cXml) ;
+			$nPosIni = stripos($InicioDoDado,$cXml) ;
 			if( $nPosIni >= 0 ){
-				$nPosIni = At($InicioDoDado,$cXml)+1 ;
-				$nPosIniTag = At($InicioDoDado,$cXml) ;
+				$nPosIni = stripos($InicioDoDado,$cXml)+1 ;
+				$nPosIniTag = stripos($InicioDoDado,$cXml) ;
 				if ( $nPosIniTag == 0 ) {
 					$nPosIniTag = 1 ;
 				}
-				for ( $X = $nPosIni ; $X < Len($cXml) ; $X++ ) {
-					if ( Subs($cXml,$X,1) == $carac02 ) {
+				for ( $X = $nPosIni ; $X < strlen($cXml) ; $X++ ) {
+					if ( stripos($cXml,$X,1) == $carac02 ) {
 						$nPosIni = $X+1 ;
 						break ;
 					}
@@ -721,8 +724,8 @@ abstract class SoapBase implements SoapInterface
 			}
 		}else{
 			$nPosIni +=1 ;
-			for ( $X = $nPosIni ; $X < Len($cXml) ; $X++ ) {
-				if ( Subs($cXml,$X,1) == $carac02 ) {
+			for ( $X = $nPosIni ; $X < strlen($cXml) ; $X++ ) {
+				if ( stripos($cXml,$X,1) == $carac02 ) {
 					$nPosIni = $X+1 ;
 					break ;
 				}
@@ -731,16 +734,16 @@ abstract class SoapBase implements SoapInterface
 		if( $nPosIni == -1 ){
 			return $cRet ;
 		}
-		if( !Vazio($cElemento2) && $nPosIni >= 0 ){
-			$cXml = Subs($cXml,$nPosIni) ;
+		if( !empty($cElemento2) && $nPosIni >= 0 ){
+			$cXml = stripos($cXml,$nPosIni) ;
 			$nPosIni = 1 ;
 		}
 		if( $nPosIni >= 0 ){
-			$nPosFim = At($FinalDoDado,$cXml) ;
+			$nPosFim = stripos($FinalDoDado,$cXml) ;
 			if( $nPosFim >= 0 ){
 				$nPosFim +=1 ;
-				for ( $X = $nPosFim ; $X <= Len($cXml) ; $X++ ) {
-					if ( Subs($cXml,$X,1) == $carac02 ) {
+				for ( $X = $nPosFim ; $X <= strlen($cXml) ; $X++ ) {
+					if ( stripos($cXml,$X,1) == $carac02 ) {
 						$nPosFimTag = $X+1 ;
 						break ;
 					}
@@ -750,7 +753,7 @@ abstract class SoapBase implements SoapInterface
 		if( $nPosIni < 0 || $nPosFim < 0 ){
 			return $cRet ;
 		}
-		$cRet = Subs($cXml,$nPosIni,$nPosFim-$nPosIni) ;
+		$cRet = stripos($cXml,$nPosIni,$nPosFim-$nPosIni) ;
 	    return $cRet ;
 	}
 }
