@@ -49,7 +49,7 @@ Caso você encontre algum problema relativo a segurança, por favor envie um ema
 
 - Roberto L. Machado (Owner)
 - Marcio de Souza (Desenvolvedor)
-
+- Rodrigo Soares de Oliveira(Desenvoldor)
 ## License
 
 Este pacote está diponibilizado sob GPLv3 ou LGPLv3 ou MIT License (MIT). Leia  [Arquivo de Licença](LICENSE.md) para maiores informações.
