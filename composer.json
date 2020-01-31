@@ -19,6 +19,12 @@
             "role": "Developer"
         },
         {
+            "name": "Rodrigo Soares de Oliveira",
+            "email": "rdsoares@gmail.com",
+            "homepage": "http://www.nfephp.org",
+            "role": "Developer"
+        },
+        {
             "name": "Comunidade NFePHP",
             "homepage": "https://github.com/nfephp-org/sped-nfse-ginfes/graphs/contributors"
         }
