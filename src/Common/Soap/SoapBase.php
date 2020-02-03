@@ -663,6 +663,14 @@ abstract class SoapBase implements SoapInterface
     protected function clearReturnSOAP($soap = '') {
         $soap = str_replace('&quot;', '"', $soap);
         $soap = str_replace('&gt;', '>', $soap);
+        $soap = str_replace('hom:', '', $soap);
+        $soap = str_replace(':hom', '', $soap);
+        $soap = str_replace('env:', '', $soap);
+        $soap = str_replace(':env', '', $soap);
+        $soap = str_replace('ns6:', '', $soap);
+        $soap = str_replace(':ns6', '', $soap);
+        $soap = str_replace('ns5:', '', $soap);
+        $soap = str_replace(':ns5', '', $soap);
         $soap = str_replace('ns4:', '', $soap);
         $soap = str_replace(':ns4', '', $soap);
         $soap = str_replace('ns3:', '', $soap);
@@ -688,12 +696,12 @@ abstract class SoapBase implements SoapInterface
 		$nPosFimTag = 0 ;
 		$cRet = '' ;
 		$cXml = $cStringXML ;
-		if( Empty($cXml) ){
+		if( Vazio($cXml) ){
 			return $cRet ;
 		}
 		if( At('=',$cElemento) < 0 ){
-			$InicioDoDado = iif( Empty($cElemento2),$carac01.$cElemento.$carac02 , $carac01.$cElemento ) ;
-			$FinalDoDado  = iif( Empty($cElemento2),$carac01."/".$cElemento.$carac02,$carac01.'/'.$cElemento2.$carac02) ;
+			$InicioDoDado = iif( Vazio($cElemento2),$carac01.$cElemento.$carac02 , $carac01.$cElemento ) ;
+			$FinalDoDado  = iif( Vazio($cElemento2),$carac01."/".$cElemento.$carac02,$carac01.'/'.$cElemento2.$carac02) ;
 		}else{
 			$InicioDoDado = $cElemento ;
 			$FinalDoDado  = $cElemento2 ;
@@ -712,7 +720,7 @@ abstract class SoapBase implements SoapInterface
 				if ( $nPosIniTag == 0 ) {
 					$nPosIniTag = 1 ;
 				}
-				for ( $X = $nPosIni ; $X < strlen($cXml) ; $X++ ) {
+				for ( $X = $nPosIni ; $X < Len($cXml) ; $X++ ) {
 					if ( Subs($cXml,$X,1) == $carac02 ) {
 						$nPosIni = $X+1 ;
 						break ;
@@ -721,7 +729,7 @@ abstract class SoapBase implements SoapInterface
 			}
 		}else{
 			$nPosIni +=1 ;
-			for ( $X = $nPosIni ; $X < strlen($cXml) ; $X++ ) {
+			for ( $X = $nPosIni ; $X < Len($cXml) ; $X++ ) {
 				if ( Subs($cXml,$X,1) == $carac02 ) {
 					$nPosIni = $X+1 ;
 					break ;
@@ -731,7 +739,7 @@ abstract class SoapBase implements SoapInterface
 		if( $nPosIni == -1 ){
 			return $cRet ;
 		}
-		if( !Empty($cElemento2) && $nPosIni >= 0 ){
+		if( !Vazio($cElemento2) && $nPosIni >= 0 ){
 			$cXml = Subs($cXml,$nPosIni) ;
 			$nPosIni = 1 ;
 		}
@@ -739,7 +747,7 @@ abstract class SoapBase implements SoapInterface
 			$nPosFim = At($FinalDoDado,$cXml) ;
 			if( $nPosFim >= 0 ){
 				$nPosFim +=1 ;
-				for ( $X = $nPosFim ; $X <= strlen($cXml) ; $X++ ) {
+				for ( $X = $nPosFim ; $X <= Len($cXml) ; $X++ ) {
 					if ( Subs($cXml,$X,1) == $carac02 ) {
 						$nPosFimTag = $X+1 ;
 						break ;
@@ -753,41 +761,4 @@ abstract class SoapBase implements SoapInterface
 		$cRet = Subs($cXml,$nPosIni,$nPosFim-$nPosIni) ;
 	    return $cRet ;
 	}
-	
-	protected function At($cSubs,$cString){
-		$nPos = strpos($cString , $cSubs ) ;
-		if( $nPos === false ){
-			$nPos = -1 ;
-		}
-		return $nPos ;
-	}	
-
-	protected function Subs($string,$ninicio,$nquant = 0){
-		if( $nquant > 0 ){
-			if( $ninicio > 0 ){
-				$cTexto = substr($string, $ninicio-1 , $nquant ) ;
-			}else{
-				$cTexto = substr($string, $ninicio , $nquant ) ;
-			}
-		}elseif( $nquant == 0  ){
-			if( $ninicio > 0 ){
-				$cTexto = substr($string, $ninicio-1 ) ;
-			}else{
-				$cTexto = substr($string, $ninicio ) ;
-			}
-		}else{
-			$cTexto = substr($string, $ninicio , $nquant) ;
-		}
-		return $cTexto ;
-	}
-
-	protected function Iif( $Condicao , $Verdadeiro , $Falso ){
-		if( $Condicao == true ){
-			$Conteudo = $Verdadeiro ;
-		}else{
-			$Conteudo = $Falso ;
-		}
-		return $Conteudo ;
-	}
-
 }
