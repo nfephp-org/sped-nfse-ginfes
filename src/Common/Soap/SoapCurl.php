@@ -100,7 +100,7 @@ class SoapCurl extends SoapBase implements SoapInterface
         curl_setopt($oCurl, CURLOPT_URL, $urlwebservice.'');
         curl_setopt($oCurl, CURLOPT_PORT , 443);
         curl_setopt($oCurl, CURLOPT_VERBOSE, 1); //apresenta informações de conexão na tela
-        curl_setopt($oCurl, CURLOPT_HEADER, 1); //retorna o cabeçalho de resposta
+        curl_setopt($oCurl, CURLOPT_HEADER, 0); //retorna o cabeçalho de resposta
         curl_setopt($oCurl, CURLOPT_SSLVERSION, 4); 
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -118,16 +118,20 @@ class SoapCurl extends SoapBase implements SoapInterface
 		}
         curl_close($oCurl);
         $xml = $this->clearReturnSOAP($response);
-		$this->response = $this->nodeXML('env:Envelope', $xml);
+		$this->response = $this->nodeXML('Envelope', $xml);
 		$node = $this->nodeXML('ListaMensagemRetorno', $xml);
 		if( empty($node) ){
 			$node = $this->nodeXML('return', $xml);
-			if( !empty($node) ){
+			if( !empty($node) ){ 
 				$node = str_replace('xmlns="http://www.w3.org/2000/09/xmldsig#" ', '' , $node);
 				$node = str_replace('xmlns="http://www.ginfes.com.br/servico_consultar_nfse_rps_resposta_v03.xsd"', '' , $node);
 				$node = str_replace('xmlns="http://www.ginfes.com.br/tipos_v03.xsd" ', '' , $node);
 				$node = str_replace('xmlns="http://www.ginfes.com.br/servico_enviar_lote_rps_resposta_v03.xsd"', '' , $node);
 				$node = str_replace('xmlns="http://www.ginfes.com.br/servico_consultar_situacao_lote_rps_resposta_v03.xsd"', '' , $node);
+				$node = str_replace('xmlns="http://www.ginfes.com.br/servico_consultar_nfse_envio"', '' , $node);
+				$node = str_replace('xmlns="http://www.ginfes.com.br/tipos" ', '' , $node);
+				$node = str_replace('xmlns="http://www.ginfes.com.br/servico_cancelar_nfse_resposta" ', '' , $node);
+				$node = str_replace('xmlns="http://www.ginfes.com.br/servico_cancelar_nfse_envio" ', '' , $node);
 				$xml = $node;
 			}	
 		} else {

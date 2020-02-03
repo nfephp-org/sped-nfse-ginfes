@@ -665,6 +665,14 @@ abstract class SoapBase implements SoapInterface
     protected function clearReturnSOAP($soap = '') {
         $soap = str_replace('&quot;', '"', $soap);
         $soap = str_replace('&gt;', '>', $soap);
+        $soap = str_replace('hom:', '', $soap);
+        $soap = str_replace(':hom', '', $soap);
+        $soap = str_replace('env:', '', $soap);
+        $soap = str_replace(':env', '', $soap);
+        $soap = str_replace('ns6:', '', $soap);
+        $soap = str_replace(':ns6', '', $soap);
+        $soap = str_replace('ns5:', '', $soap);
+        $soap = str_replace(':ns5', '', $soap);
         $soap = str_replace('ns4:', '', $soap);
         $soap = str_replace(':ns4', '', $soap);
         $soap = str_replace('ns3:', '', $soap);
