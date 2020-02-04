@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hom:RecepcionarLoteRpsV3 xmlns:hom="http://homologacao.ginfes.com.br">
+            <arg0>
+                <ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd"
+                               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <versaoDados>3</versaoDados>
+                </ns2:cabecalho>
+            </arg0>
+            <arg1>
+                <EnviarLoteRpsEnvio xmlns="http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd">
+                    <LoteRps xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd" Id="1710">
+                        <tipos:NumeroLote>1710</tipos:NumeroLote>
+                        <tipos:Cnpj>11222333444455</tipos:Cnpj>
+                        <tipos:InscricaoMunicipal>11223</tipos:InscricaoMunicipal>
+                        <tipos:QuantidadeRps>1</tipos:QuantidadeRps>
+                        <tipos:ListaRps>
+                            <tipos:Rps>
+                                <tipos:InfRps>
+                                    <tipos:IdentificacaoRps>
+                                        <tipos:Numero>1710</tipos:Numero>
+                                        <tipos:Serie>1</tipos:Serie>
+                                        <tipos:Tipo>1</tipos:Tipo>
+                                    </tipos:IdentificacaoRps>
+                                    <tipos:DataEmissao>2019-07-29T06:50:42</tipos:DataEmissao>
+                                    <tipos:NaturezaOperacao>1</tipos:NaturezaOperacao>
+                                    <tipos:RegimeEspecialTributacao>6</tipos:RegimeEspecialTributacao>
+                                    <tipos:OptanteSimplesNacional>2</tipos:OptanteSimplesNacional>
+                                    <tipos:IncentivadorCultural>2</tipos:IncentivadorCultural>
+                                    <tipos:Status>1</tipos:Status>
+                                    <tipos:Servico>
+                                        <tipos:Valores>
+                                            <tipos:ValorServicos>116.00</tipos:ValorServicos>
+                                            <tipos:ValorDeducoes>0.00</tipos:ValorDeducoes>
+                                            <tipos:ValorPis>0.00</tipos:ValorPis>
+                                            <tipos:ValorCofins>0.00</tipos:ValorCofins>
+                                            <tipos:ValorInss>0.00</tipos:ValorInss>
+                                            <tipos:ValorIr>0.00</tipos:ValorIr>
+                                            <tipos:ValorCsll>0.00</tipos:ValorCsll>
+                                            <tipos:IssRetido>2</tipos:IssRetido>
+                                            <tipos:ValorIss>2.32</tipos:ValorIss>
+                                            <tipos:ValorIssRetido>0.00</tipos:ValorIssRetido>
+                                            <tipos:OutrasRetencoes>0.00</tipos:OutrasRetencoes>
+                                            <tipos:BaseCalculo>116.00</tipos:BaseCalculo>
+                                            <tipos:Aliquota>0.0200</tipos:Aliquota>
+                                            <tipos:ValorLiquidoNfse>116.00</tipos:ValorLiquidoNfse>
+                                            <tipos:DescontoIncondicionado>0.00</tipos:DescontoIncondicionado>
+                                            <tipos:DescontoCondicionado>0.00</tipos:DescontoCondicionado>
+                                        </tipos:Valores>
+                                        <tipos:ItemListaServico>1.01</tipos:ItemListaServico>
+                                        <tipos:CodigoTributacaoMunicipio>620150101</tipos:CodigoTributacaoMunicipio>
+                                        <tipos:Discriminacao>SUPORTE E USO MENSAL DO SISTEMA | Em atendimento a Lei
+                                            12.741/2012 (Lei do Imposto na Nota Fiscal) informamos que o valor
+                                            aproximado dos | tributos incidentes sobre as operacoes deste
+                                            estabelecimento e de: 8,65% assim distribuidos: | Estado: 3,65% | Uniao:
+                                            0,00% | Municipio: 5,00%
+                                        </tipos:Discriminacao>
+                                        <tipos:CodigoMunicipio>3518800</tipos:CodigoMunicipio>
+                                    </tipos:Servico>
+                                    <tipos:Prestador>
+                                        <tipos:Cnpj>11222333444455</tipos:Cnpj>
+                                        <tipos:InscricaoMunicipal>11223</tipos:InscricaoMunicipal>
+                                    </tipos:Prestador>
+                                    <tipos:Tomador>
+                                        <tipos:IdentificacaoTomador>
+                                            <tipos:CpfCnpj>
+                                                <tipos:Cnpj>99888777666655</tipos:Cnpj>
+                                            </tipos:CpfCnpj>
+                                        </tipos:IdentificacaoTomador>
+                                        <tipos:RazaoSocial>SIMULADA S/A</tipos:RazaoSocial>
+                                        <tipos:Endereco>
+                                            <tipos:Endereco>AV CENTRAL</tipos:Endereco>
+                                            <tipos:Numero>100</tipos:Numero>
+                                            <tipos:Bairro>CENTRO</tipos:Bairro>
+                                            <tipos:CodigoMunicipio>3550308</tipos:CodigoMunicipio>
+                                            <tipos:Uf>SP</tipos:Uf>
+                                            <tipos:Cep>07000000</tipos:Cep>
+                                        </tipos:Endereco>
+                                        <tipos:Contato>
+                                            <tipos:Email>financeiro@simulada.com.br</tipos:Email>
+                                        </tipos:Contato>
+                                    </tipos:Tomador>
+                                </tipos:InfRps>
+                            </tipos:Rps>
+                        </tipos:ListaRps>
+                    </LoteRps>
+                    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+                        <SignedInfo>
+                            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+                            <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                            <Reference URI="#1710">
+                                <Transforms>
+                                    <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                                    <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+                                </Transforms>
+                                <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                                <DigestValue>FDQ5wGnn0AU0i6IwovWgMIYhhuU=</DigestValue>
+                            </Reference>
+                        </SignedInfo>
+                        <SignatureValue>
+                            hS9P7D9LJel2+8Whg6aAZD0ARc5B53Ln4ovH1iGmYu+sTWasp3po+M24nx4r9g/sDsVLdDcNzafj/TYPoZ1rvbzSo/kWmzyiG6uyrow4HQjUrfjd8IcP2+GkBVNHQlvgI2XEUg6ckT84JeyX49RtDRk+LgeNTnfSoSQW02i09Tg=
+                        </SignatureValue>
+                        <KeyInfo>
+                            <X509Data>
+                                <X509Certificate>
+                                    MIIEqzCCA5OgAwIBAgIDMTg4MA0GCSqGSIb3DQEBBQUAMIGSMQswCQYDVQQGEwJCUjELMAkGA1UECBMCUlMxFTATBgNVBAcTDFBvcnRvIEFsZWdyZTEdMBsGA1UEChMUVGVzdGUgUHJvamV0byBORmUgUlMxHTAbBgNVBAsTFFRlc3RlIFByb2pldG8gTkZlIFJTMSEwHwYDVQQDExhORmUgLSBBQyBJbnRlcm1lZGlhcmlhIDEwHhcNMDkwNTIyMTcwNzAzWhcNMTAxMDAyMTcwNzAzWjCBnjELMAkGA1UECBMCUlMxHTAbBgNVBAsTFFRlc3RlIFByb2pldG8gTkZlIFJTMR0wGwYDVQQKExRUZXN0ZSBQcm9qZXRvIE5GZSBSUzEVMBMGA1UEBxMMUE9SVE8gQUxFR1JFMQswCQYDVQQGEwJCUjEtMCsGA1UEAxMkTkZlIC0gQXNzb2NpYWNhbyBORi1lOjk5OTk5MDkwOTEwMjcwMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx1O/e1Q+xh+wCoxa4pr/5aEFt2dEX9iBJyYu/2a78emtorZKbWeyK435SRTbHxHSjqe1sWtIhXBaFa2dHiukT1WJyoAcXwB1GtxjT2VVESQGtRiujMa+opus6dufJJl7RslAjqN/ZPxcBXaezt0nHvnUB/uB1K8WT9G7ES0V17wIDAQABo4IBfjCCAXowIgYDVR0jAQEABBgwFoAUPT5TqhNWAm+ZpcVsvB7malDBjEQwDwYDVR0TAQH/BAUwAwEBADAPBgNVHQ8BAf8EBQMDAOAAMAwGA1UdIAEBAAQCMAAwgawGA1UdEQEBAASBoTCBnqA4BgVgTAEDBKAvBC0yMjA4MTk3Nzk5OTk5OTk5OTk5MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDCgEgYFYEwBAwKgCQQHREZULU5GZaAZBgVgTAEDA6AQBA45OTk5OTA5MDkxMDI3MKAXBgVgTAEDB6AOBAwwMDAwMDAwMDAwMDCBGmRmdC1uZmVAcHJvY2VyZ3MucnMuZ292LmJyMCAGA1UdJQEB/wQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDBTBgNVHR8BAQAESTBHMEWgQ6BBhj9odHRwOi8vbmZlY2VydGlmaWNhZG8uc2VmYXoucnMuZ292LmJyL0xDUi9BQ0ludGVybWVkaWFyaWEzOC5jcmwwDQYJKoZIhvcNAQEFBQADggEBAJFytXuiS02eJO0iMQr/Hi+Ox7/vYiPewiDL7s5EwO8A9jKx9G2Baz0KEjcdaeZk9a2NzDEgX9zboPxhw0RkWahVCP2xvRFWswDIa2WRUT/LHTEuTeKCJ0iF/um/kYM8PmWxPsDWzvsCCRp146lc0lz9LGm5ruPVYPZ/7DAoimUk3bdCMW/rzkVYg7iitxHrhklxH7YWQHUwbcqPt7Jv0RJxclc1MhQlV2eM2MO1iIlk8Eti86dRrJVoicR1bwc6/YDqDp4PFONTi1ddewRu6elGS74AzCcNYRSVTINYiZLpBZO0uivrnTEnsFguVnNtWb9MAHGt3tkR0gAVs6S0fm8=
+                                </X509Certificate>
+                            </X509Data>
+                        </KeyInfo>
+                    </Signature>
+                </EnviarLoteRpsEnvio>
+            </arg1>
+        </hom:RecepcionarLoteRpsV3>
+    </soapenv:Body>
+</soapenv:Envelope>

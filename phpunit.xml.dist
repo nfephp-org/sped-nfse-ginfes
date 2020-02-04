@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="sped-nfse-ginfes Test Suite">
+        <testsuite name="sped-nfse-nacional Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

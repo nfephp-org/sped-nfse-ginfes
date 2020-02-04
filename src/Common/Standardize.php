@@ -3,24 +3,23 @@
 namespace NFePHP\NFSeGinfes\Common;
 
 /**
- * Class for identification and convertion of eletronic documents in xml
- * for documents used in sped-nfe, sped-esocial, sped-cte, sped-mdfe, etc.
+ * Class for identification of eletronic documents in xml
+ * used for comunications an convertion to other formats
  *
- * @category  NFePHP
- * @package   NFePHP\Common\Standardize
- * @copyright NFePHP Copyright (c) 2008-2017
+ * @category  library
+ * @package   NFePHP\NFSeGinfes
+ * @copyright NFePHP Copyright (c) 2017
  * @license   http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license   https://opensource.org/licenses/MIT MIT
  * @license   http://www.gnu.org/licenses/gpl.txt GPLv3+
  * @author    Roberto L. Machado <linux.rlm at gmail dot com>
- * @link      http://github.com/nfephp-org/sped-nfe for the canonical source repository
+ * @link      http://github.com/nfephp-org/sped-nfse-nacional for the canonical source repository
  */
 
-use NFePHP\Common\Validator;
-use NFePHP\NFSeGinfes\Exception\DocumentsException;
-use Symfony\Component\Yaml\Yaml;
 use DOMDocument;
 use stdClass;
+use InvalidArgumentException;
+use NFePHP\Common\Validator;
 
 class Standardize
 {
@@ -33,28 +32,32 @@ class Standardize
      */
     public $json = '';
     /**
-     * @var string
-     */
-    public $key = '';
-    /**
      * @var array
      */
     public $rootTagList = [
-        'ConsultarNfseRpsResposta',
+        'CancelarNfseEnvio',
+        'ConsultarLoteRpsEnvio',
+        'ConsultarNfseEnvio',
+        'ConsultarNfseFaixaEnvio',
+        'ConsultarNfseRpsEnvio',
+        'EnviarLoteRpsEnvio',
+        'GerarNfseEnvio',
+        'CancelarNfseResposta',
         'ConsultarSituacaoLoteRpsResposta',
+        'ConsultarNfseResposta',
+        'ConsultarNfseFaixaResposta',
+        'ConsultarNfseRpsResposta',
         'EnviarLoteRpsResposta',
-        'MensagemRetorno'
+        'GerarNfseEnvio',
+        'GerarNfseResposta',
+        'RPS'
     ];
-    
-    /**
-     * Constructor
-     * @param string $xml
-     */
+
     public function __construct($xml = null)
     {
         $this->toStd($xml);
     }
-    
+
     /**
      * Identify node and extract from XML for convertion type
      * @param string $xml
@@ -64,9 +67,11 @@ class Standardize
     public function whichIs($xml)
     {
         if (!Validator::isXML($xml)) {
-            //invalid document is not a XML
-            throw DocumentsException::wrongDocument(6);
+            throw new InvalidArgumentException(
+                "O argumento passado não é um XML válido."
+            );
         }
+        $xml = $this->removeNS($xml);
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = false;
@@ -80,10 +85,11 @@ class Standardize
                 return $key;
             }
         }
-        //documento does not belong to the SPED-NFSe-Ginfes project
-        throw DocumentsException::wrongDocument(7);
+        throw new InvalidArgumentException(
+            "Este xml não pertence ao projeto NFSe Nacional."
+        );
     }
-    
+
     /**
      * Returns extract node from XML
      * @return string
@@ -92,7 +98,7 @@ class Standardize
     {
         return $this->node;
     }
-    
+
     /**
      * Returns stdClass converted from xml
      * @param string $xml
@@ -101,9 +107,8 @@ class Standardize
     public function toStd($xml = null)
     {
         if (!empty($xml)) {
-            $this->key = $this->whichIs($xml);
+            $this->whichIs($xml);
         }
-        
         $sxml = simplexml_load_string($this->node);
         $this->json = str_replace(
             '@attributes',
@@ -112,7 +117,7 @@ class Standardize
         );
         return json_decode($this->json);
     }
-    
+
     /**
      * Retruns JSON string form XML
      * @param string $xml
@@ -125,7 +130,7 @@ class Standardize
         }
         return $this->json;
     }
-    
+
     /**
      * Returns array from XML
      * @param string $xml
@@ -138,18 +143,29 @@ class Standardize
         }
         return json_decode($this->json, true);
     }
-    
+
     /**
-     * Returns YAML from XML
+     * Remove all namespaces from XML
      * @param string $xml
      * @return string
      */
-    public function toYaml($xml = null)
+    protected function removeNS($xml)
     {
-        if (!empty($xml)) {
-            $this->toStd($xml);
+        $sxe = new \SimpleXMLElement($xml);
+        $dom_sxe = dom_import_simplexml($sxe);
+        $dom = new \DOMDocument('1.0');
+        $dom_sxe = $dom->importNode($dom_sxe, true);
+        $dom_sxe = $dom->appendChild($dom_sxe);
+        $element = $dom->childNodes->item(0);
+        foreach ($sxe->getDocNamespaces() as $name => $uri) {
+            $element->removeAttributeNS($uri, $name);
         }
-        $array = $this->toArray();
-        return Yaml::dump($array, 6, 4);
+        $xml = $dom->saveXML();
+        if (stripos($xml, 'xmlns=') !== false) {
+            $xml = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', null, $xml);
+            $xml = str_replace('default:', '', $xml);
+            $xml = preg_replace('~[\s]+xmlns:default=[\'"].+?[\'"]~i', null, $xml);
+        }
+        return $xml;
     }
 }

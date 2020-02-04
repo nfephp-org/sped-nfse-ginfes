@@ -1,21 +1,24 @@
 # Changelog
 
-All Notable changes to `sped-nfse-ginfes` will be documented in this file.
+All Notable changes to `sped-nfse-nacional` will be documented in this file.
 
+Todas as atualizações a partir de 31/10/2018 devem observar os princípios [Mantendo o CHANGELOG](http://keepachangelog.com/).
 
-## 1.0.0 primeira versão BETA (release 29/07/2019)
+## 1.0.0-dev 
 
->### Added
+## Notas da versão:
+
+### Added
 - Nothing
 
->### Deprecated
+### Deprecated
 - Nothing
 
->### Fixed
+### Fixed
 - Nothing
 
->### Removed
+### Removed
 - Nothing
 
->### Security
+### Security
 - Nothing

@@ -1,0 +1,13 @@
+{
+    "3547809": {
+        "municipio": "Santo André",
+        "uf": "SP",
+        "homologacao": "https://homologacao.ginfes.com.br/ServiceGinfesImpl",
+        "producao": "https://producao.ginfes.com.br/ServiceGinfesImpl",
+        "version": "3",
+        "homologacao_msgns": "",
+        "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
+        "producao_msgns": "",
+        "producao_soapns": "http:\/\/producao.ginfes.com.br"
+    }
+}

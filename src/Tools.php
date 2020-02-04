@@ -3,228 +3,311 @@
 namespace NFePHP\NFSeGinfes;
 
 /**
- * Class responsible for communication with SEFAZ extends
- * NFePHP\NFSeGinfes\Common\Tools
+ * Class for comunications with NFSe webserver in Nacional Standard
  *
  * @category  NFePHP
- * @package   NFePHP\NFSeGinfes\Tools
- * @copyright NFePHP Copyright (c) 2008-2017
+ * @package   NFePHP\NFSeGinfes
+ * @copyright NFePHP Copyright (c) 2008-2018
  * @license   http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license   https://opensource.org/licenses/MIT MIT
  * @license   http://www.gnu.org/licenses/gpl.txt GPLv3+
  * @author    Roberto L. Machado <linux.rlm at gmail dot com>
- * @link      http://github.com/nfephp-org/sped-nfse-ginfes for the canonical source repository
+ * @link      http://github.com/nfephp-org/sped-nfse-nacional for the canonical source repository
  */
 
-use NFePHP\Common\Strings;
-use NFePHP\Common\Signer;
-use NFePHP\Common\UFList;
-use NFePHP\NFSeGinfes\Common\Tools as ToolsCommon;
-use RuntimeException;
-use InvalidArgumentException;
+use NFePHP\Common\Certificate;
+use NFePHP\Common\Validator;
+use NFePHP\NFSeGinfes\Common\Signer;
+use NFePHP\NFSeGinfes\Common\Tools as BaseTools;
 
-class Tools extends ToolsCommon
+class Tools extends BaseTools
 {
+    const ERRO_EMISSAO = 1;
+    const SERVICO_NAO_CONCLUIDO = 2;
 
-    /**
-     * Request authorization to issue NFSe in batch with one or more documents
-     * @param array $cXml 
-     * @return string 
-     */
-    public function EnviaLoteNFSe(
-        $cXml
-    ) {
-        $servico = 'EnviarLoteRpsEnvio';
-        $this->servico(
-            $servico
-        );
-        $this->lastRequest = $cXml;
-        $this->lastResponse = $this->sendRequest($cXml);
-        return $this->lastResponse;
-    }
-    
-    /**
-     * Check status of Batch of NFSe sent by receipt of this shipment
-     * @param string $numNFSe
-     * @param string $serie
-     * @param string $tipo
-     * @return string
-     */
-    public function ConsultaNFSe($numNFSe, $serie = '1', $tipo = '1')
+    protected $xsdpath;
+
+    public function __construct($config, Certificate $cert)
     {
-        $servico = 'ConsultarNfseRpsEnvio';
-        $this->servico(
-            $servico
+        parent::__construct($config, $cert);
+        $path = realpath(
+            __DIR__ . '/../storage/schemes'
         );
+        $this->xsdpath = $path;
+    }
 
-        $xml  = '<ConsultarNfseRpsEnvio xmlns="http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd" ' ;
-        $xml .= 'xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd">' ;
-        $xml .= '<IdentificacaoRps>' ;
-			$xml .= '<tipos:Numero>' . $numNFSe . '</tipos:Numero>' ; 
-			$xml .= '<tipos:Serie>' . $serie . '</tipos:Serie>' ;
-			$xml .= '<tipos:Tipo>' . $tipo . '</tipos:Tipo>' ;
-        $xml .= '</IdentificacaoRps>' ;
-        $xml .= '<Prestador>' ;
-			$xml .= '<tipos:Cnpj>' . $this->config->cnpj . '</tipos:Cnpj>' ;
-			$xml .= '<tipos:InscricaoMunicipal>' . $this->config->inscricaomunicipal . '</tipos:InscricaoMunicipal>' ; 
-        $xml .= '</Prestador>' ;
-        $xml .= '</ConsultarNfseRpsEnvio>';
+    /**
+     * Envia LOTE de RPS para emissão de NFSe (ASSINCRONO)
+     * @param array $arps Array contendo de 1 a 50 RPS::class
+     * @param string $lote Número do lote de envio
+     * @return string
+     * @throws \Exception
+     */
+    public function recepcionarLoteRps($arps, $lote)
+    {
+        $operation = 'RecepcionarLoteRpsV3';
+        $no_of_rps_in_lot = count($arps);
+        if ($no_of_rps_in_lot > 50) {
+            throw new \Exception('O limite é de 50 RPS por lote enviado.');
+        }
+        $content = '';
+        foreach ($arps as $rps) {
+            $rps->config($this->config);
+            $content .= $rps->render();
+        }
+        $contentmsg = "<EnviarLoteRpsEnvio xmlns=\"http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd\">"
+            . "<LoteRps Id=\"$lote\" xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">"
+            . "<tipos:NumeroLote>$lote</tipos:NumeroLote>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "<tipos:QuantidadeRps>$no_of_rps_in_lot</tipos:QuantidadeRps>"
+            . "<tipos:ListaRps>"
+            . $content
+            . "</tipos:ListaRps>"
+            . "</LoteRps>"
+            . "</EnviarLoteRpsEnvio>";
 
-        //assinatura dos dados
-        $signed = Signer::sign(
+        $content = Signer::sign(
             $this->certificate,
-            $xml,
-            'ConsultarNfseRpsEnvio',
+            $contentmsg,
+            'LoteRps',
             'Id',
-            $this->algorithm,
-            $this->canonical
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null],
+            'EnviarLoteRpsEnvio'
         );
-        
-        $request = Strings::clearXmlString($signed, true);
-        $this->isValid($this->versao, $request);
-
-        $this->lastRequest = $request;
-        $response = $this->sendRequest($request);
-        return $response;
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        //header("Content-type: text/plain");echo $content;exit;
+        Validator::isValid($content, $this->xsdpath . "/servico_enviar_lote_rps_envio_v03.xsd");
+        return $this->send($content, $operation);
     }
 
     /**
-     * Check status of Batch of NFSe sent by receipt of this shipment
-     * @param string $numNFSe
+     * Consulta Lote RPS (SINCRONO) após envio com recepcionarLoteRps() (ASSINCRONO)
+     * complemento do processo de envio assincono.
+     * Que deve ser usado quando temos mais de um RPS sendo enviado
+     * por vez.
+     * @param string $protocolo
      * @return string
+     *
+     * Código de situação de lote de RPS
+     * 1 – Não Recebido
+     * 2 – Não Processado
+     * 3 – Processado com Erro
+     * 4 – Processado com Sucesso
      */
-    public function SituacaoNFSe($protocolo)
+    public function consultarLoteRps($protocolo)
     {
-        $servico = 'ConsultarSituacaoLoteRpsEnvio';
-        $this->servico(
-            $servico
-        );
-
-        $xml  = '<ConsultarSituacaoLoteRpsEnvio ' ;
-        $xml .= 'xmlns="http://www.ginfes.com.br/servico_consultar_situacao_lote_rps_envio_v03.xsd" ' ;
-        $xml .= 'xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd">' ;
-        $xml .= '<Prestador>' ;
-			$xml .= '<tipos:Cnpj>' . $this->config->cnpj . '</tipos:Cnpj>' ;
-			$xml .= '<tipos:InscricaoMunicipal>' . $this->config->inscricaomunicipal . '</tipos:InscricaoMunicipal>' ;
-        $xml .= '</Prestador>' ;
-        $xml .= '<Protocolo>' . $protocolo . '</Protocolo>';
-        $xml .= '</ConsultarSituacaoLoteRpsEnvio>';
+        $operation = "ConsultarSituacaoLoteRpsV3";
+        $content = "<ConsultarSituacaoLoteRpsEnvio "
+            . "xmlns=\"http://www.ginfes.com.br/servico_consultar_situacao_lote_rps_envio_v03.xsd\" "
+            . "xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">"
+            . "<Prestador>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "</Prestador>"
+            . "<Protocolo>$protocolo</Protocolo>"
+            . "</ConsultarSituacaoLoteRpsEnvio>";
 
         //assinatura dos dados
-        $signed = Signer::sign(
+        $content = Signer::sign(
             $this->certificate,
-            $xml,
+            $content,
             'ConsultarSituacaoLoteRpsEnvio',
-            'Id',
-            $this->algorithm,
-            $this->canonical
+            '',
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null]
         );
-        
-        $request = Strings::clearXmlString($signed, true);
-        $this->isValid($this->versao, $request);
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        Validator::isValid($content, $this->xsdpath . '/servico_consultar_situacao_lote_rps_envio_v03.xsd');
+        return $this->send($content, $operation);
+    }
 
-        $this->lastRequest = $request;
-        $response = $this->sendRequest($request);
-        return $response;
+
+    /**
+     * Consulta NFSe emitidas em um periodo e por tomador (SINCRONO)
+     * @param string $dini
+     * @param string $dfim
+     * @param string $tomadorCnpj
+     * @param string $tomadorCpf
+     * @param string $tomadorIM
+     * @return string
+     */
+    public function consultarNfse($dini, $dfim, $tomadorCnpj = null, $tomadorCpf = null, $tomadorIM = null)
+    {
+        $operation = 'ConsultarNfseV3';
+        $content = "<ConsultarNfseEnvio "
+            . "xmlns=\"http://www.ginfes.com.br/servico_consultar_nfse_envio_v03.xsd\" "
+            . "xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">"
+            . "<Prestador>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "</Prestador>"
+            . "<PeriodoEmissao>"
+            . "<DataInicial>$dini</DataInicial>"
+            . "<DataFinal>$dfim</DataFinal>"
+            . "</PeriodoEmissao>";
+
+        if ($tomadorCnpj || $tomadorCpf) {
+            $content .= "<Tomador>"
+                . "<CpfCnpj>";
+            if (isset($tomadorCnpj)) {
+                $content .= "<Cnpj>$tomadorCnpj</Cnpj>";
+            } else {
+                $content .= "<Cpf>$tomadorCpf</Cpf>";
+            }
+            $content .= "</CpfCnpj>";
+            if (isset($tomadorIM)) {
+                $content .= "<InscricaoMunicipal>$tomadorIM</InscricaoMunicipal>";
+            }
+            $content .= "</Tomador>";
+        }
+        $content .= "</ConsultarNfseEnvio>";
+        //assinatura dos dados
+        $content = Signer::sign(
+            $this->certificate,
+            $content,
+            'ConsultarNfseEnvio',
+            '',
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null]
+        );
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        Validator::isValid($content, $this->xsdpath . '/servico_consultar_nfse_envio_v03.xsd');
+        return $this->send($content, $operation);
     }
 
     /**
-     * Requires NFSe cancellation
-     * @param  string $numNFSe NFSe number
+     * Consulta NFSe por RPS (SINCRONO)
+     * @param integer $numero
+     * @param string $serie
+     * @param integer $tipo
      * @return string
      */
-    public function CancelarNFSe_V3($numNFSe)
+    public function consultarNfsePorRps($numero, $serie, $tipo)
     {
-        $servico = 'CancelarNfseEnvio_V3';
-        $this->servico(
-            $servico
-        );
-		/* 
-		 * Versão 3.0 não funciona em Guarulhos 
-		 */
-        $xml  = '<CancelarNfseEnvio ' ;
-        $xml .= 'xmlns="http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd" ' ;
-        $xml .= 'xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd">' ;
-			$xml .= '<Pedido xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd">' ;
-				$xml .= '<tipos:InfPedidoCancelamento Id="'.$numNFSe.'">' ;
-					$xml .= '<tipos:IdentificacaoNfse>' ;
-						$xml .= '<tipos:Numero>' . $numNFSe . '</tipos:Numero>';
-						$xml .= '<tipos:Cnpj>' . $this->config->cnpj . '</tipos:Cnpj>';
-						$xml .= '<tipos:InscricaoMunicipal>' . $this->config->inscricaomunicipal . '</tipos:InscricaoMunicipal>';
-						$xml .= '<tipos:CodigoMunicipio>' . $this->config->codigomunicipio . '</tipos:CodigoMunicipio>';
-					$xml .= '</tipos:IdentificacaoNfse>';
-					$xml .= '<tipos:CodigoCancelamento>1</tipos:CodigoCancelamento>';
-				$xml .= '</tipos:InfPedidoCancelamento>';
-			$xml .= '</Pedido>';
-
-        $xml .= '</CancelarNfseEnvio>';
-
+        $operation = "ConsultarNfsePorRpsV3";
+        $content = "<ConsultarNfseRpsEnvio "
+            . "xmlns=\"http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd\" "
+            . "xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\">"
+            . "<IdentificacaoRps>"
+            . "<tipos:Numero>$numero</tipos:Numero>"
+            . "<tipos:Serie>$serie</tipos:Serie>"
+            . "<tipos:Tipo>$tipo</tipos:Tipo>"
+            . "</IdentificacaoRps>"
+            . "<Prestador>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "</Prestador>"
+            . "</ConsultarNfseRpsEnvio>";
         //assinatura dos dados
-        $signed = Signer::sign(
+        $content = Signer::sign(
+            $this->certificate,
+            $content,
+            'ConsultarNfseRpsEnvio',
+            '',
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null]
+        );
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        Validator::isValid($content, $this->xsdpath . '/servico_consultar_nfse_rps_envio_v03.xsd');
+        return $this->send($content, $operation);
+    }
+
+
+    /**
+     * Solicita o cancelamento de NFSe (SINCRONO)
+     * @param integer $numero
+     * @param integer $codigo
+     * @param string $id
+     * @return string
+     */
+    public function cancelarNfseV3($numero, $codigo = self::ERRO_EMISSAO, $id = null)
+    {
+        /*
+         * Versão 3.0 não funciona em Guarulhos
+         */
+        if (empty($id)) {
+            $id = $numero;
+        }
+        $operation = 'CancelarNfseV3';
+        $xml = "<CancelarNfseEnvio>"
+            . "<Pedido xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" "
+            . "mlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\">"
+            . "<InfPedidoCancelamento Id=\"$id\">"
+            . "<tipos:IdentificacaoNfse>"
+            . "<tipos:Numero>$numero</tipos:Numero>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "<tipos:CodigoMunicipio>" . $this->config->cmun . "</tipos:CodigoMunicipio>"
+            . "</tipos:IdentificacaoNfse>"
+            . "<tipos:CodigoCancelamento>$codigo</tipos:CodigoCancelamento>"
+            . "</InfPedidoCancelamento>"
+            . "</Pedido>"
+            . "</CancelarNfseEnvio>";
+
+        $content = Signer::sign(
             $this->certificate,
             $xml,
             'InfPedidoCancelamento',
-            '',
-            $this->algorithm,
-            $this->canonical,
+            'Id',
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null],
             'Pedido'
         );
-        $signed = Signer::sign(
+        $content = Signer::sign(
             $this->certificate,
-            $signed,
+            $content,
             'Pedido',
             '',
-            $this->algorithm,
-            $this->canonical,
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null],
             'CancelarNfseEnvio'
         );
-
-        $request = Strings::clearXmlString($signed, true);
-        $this->lastRequest = $request;
-        $response = $this->sendRequest($request);
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        //header("Content-type: text/xml");echo $content;exit;
+        Validator::isValid($xml, $this->xsdpath . '/servico_cancelar_nfse_envio_v03.xsd');
+        $response = $this->send($content, $operation);
         return $response;
     }
 
     /**
-     * Requires NFSe cancellation
-     * @param  string $numNFSe NFSe number
+     * Solicita o cancelamento de NFSe (SINCRONO)
+     * @param integer $numero
+     * @param integer $codigo
+     * @param string $id
      * @return string
      */
-    public function CancelarNFSe_V2($numNFSe)
+    public function cancelarNfseV2($numero)
     {
-        $servico = 'CancelarNfseEnvio_V2';
-        $this->servico(
-            $servico
-        );
-		/* 
-		 * Versão 2.0 funciona em Guarulhos 
-		 */
-        $xml  = '<CancelarNfseEnvio ' ;
-        $xml .= 'xmlns="http://www.ginfes.com.br/servico_cancelar_nfse_envio" ' ;
-        $xml .= 'xmlns:tipos="http://www.ginfes.com.br/tipos" ' ;
-        $xml .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' ;
-			$xml .= '<Prestador>' ;
-				$xml .= '<tipos:Cnpj>' . $this->config->cnpj . '</tipos:Cnpj>';
-				$xml .= '<tipos:InscricaoMunicipal>' . $this->config->inscricaomunicipal . '</tipos:InscricaoMunicipal>';
-			$xml .= '</Prestador>';
-			$xml .= '<NumeroNfse>' . $numNFSe . '</NumeroNfse>';
-        $xml .= '</CancelarNfseEnvio>';
+        /*
+         * Versão 2.0 funciona em Guarulhos
+         */
+        $operation = 'CancelarNfse';
+        $xml = "<CancelarNfseEnvio "
+            . "xmlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio\" "
+            . "xmlns:tipos=\"http://www.ginfes.com.br/tipos\">"
+            . "<Prestador>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "</Prestador>"
+            . "<NumeroNfse>$numero</NumeroNfse>"
+            . "</CancelarNfseEnvio>";
 
-        //assinatura dos dados
-        $signed = Signer::sign(
+        $content = Signer::sign(
             $this->certificate,
             $xml,
             'CancelarNfseEnvio',
-            'Id',
-            $this->algorithm,
-            $this->canonical
+            '',
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null]
         );
-        
-        $request = Strings::clearXmlString($signed, true);
-        $resp = $this->isValid($this->versao, $signed);
-        $this->lastRequest = $request;
-        $response = $this->sendRequest($request);
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        //header("Content-type: text/xml");echo $content;exit;
+        Validator::isValid($content, $this->xsdpath . '/servico_cancelar_nfse_envio_v02.xsd');
+        $this->setVersion("2");
+        $response = $this->send($content, $operation);
         return $response;
     }
-    
+
 }
