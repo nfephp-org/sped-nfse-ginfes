@@ -1,9 +1,9 @@
 {
-    "name": "nfephp-org/sped-nfse-nacional",
+    "name": "nfephp-org/sped-nfse-ginfes",
     "type": "library",
-    "description": "API para geração e comunicação de RPS e NFSe no padão Nacional.",
+    "description": "API para geração e comunicação de RPS e NFSe no padão Ginfes.",
     "keywords": ["nfe","nfse","sped","nfephp"],
-    "homepage": "https://github.com/nfephp-org/sped-nfse-nacional",
+    "homepage": "https://github.com/nfephp-org/sped-nfse-ginfes",
     "license": ["LGPL-3.0-or-later", "GPL-3.0-or-later", "MIT"],
     "authors": [
         {

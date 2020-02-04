@@ -7,12 +7,12 @@ namespace NFePHP\NFSeGinfes;
  *
  * @category  NFePHP
  * @package   NFePHP\NFSeGinfes
- * @copyright NFePHP Copyright (c) 2008-2018
+ * @copyright NFePHP Copyright (c) 2020
  * @license   http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license   https://opensource.org/licenses/MIT MIT
  * @license   http://www.gnu.org/licenses/gpl.txt GPLv3+
- * @author    Roberto L. Machado <linux.rlm at gmail dot com>
- * @link      http://github.com/nfephp-org/sped-nfse-nacional for the canonical source repository
+ * @author    Cleiton Perin <cperin20 at gmail dot com>
+ * @link      http://github.com/nfephp-org/sped-nfse-ginfes for the canonical source repository
  */
 
 use NFePHP\Common\Certificate;
@@ -77,7 +77,6 @@ class Tools extends BaseTools
             'EnviarLoteRpsEnvio'
         );
         $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
-        //header("Content-type: text/plain");echo $content;exit;
         Validator::isValid($content, $this->xsdpath . "/servico_enviar_lote_rps_envio_v03.xsd");
         return $this->send($content, $operation);
     }
@@ -214,6 +213,21 @@ class Tools extends BaseTools
         return $this->send($content, $operation);
     }
 
+    /**
+     * Solicita o cancelamento de NFSe (SINCRONO)
+     * @param integer $numero
+     * @param integer $codigo
+     * @param string $id
+     * @param string $versao
+     * @return string
+     */
+    public function cancelarNfse($numero, $codigo = self::ERRO_EMISSAO, $id = null, $versao = "3")
+    {
+        if ($versao == "3") {
+            return $this->cancelarNfseV3($numero, $codigo, $id);
+        }
+        return $this->cancelarNfseV2($numero);
+    }
 
     /**
      * Solicita o cancelamento de NFSe (SINCRONO)
@@ -231,20 +245,21 @@ class Tools extends BaseTools
             $id = $numero;
         }
         $operation = 'CancelarNfseV3';
-        $xml = "<CancelarNfseEnvio>"
-            . "<Pedido xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" "
-            . "mlns=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\">"
-            . "<InfPedidoCancelamento Id=\"$id\">"
-            . "<tipos:IdentificacaoNfse>"
-            . "<tipos:Numero>$numero</tipos:Numero>"
-            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
-            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
-            . "<tipos:CodigoMunicipio>" . $this->config->cmun . "</tipos:CodigoMunicipio>"
-            . "</tipos:IdentificacaoNfse>"
-            . "<tipos:CodigoCancelamento>$codigo</tipos:CodigoCancelamento>"
-            . "</InfPedidoCancelamento>"
+        $xml = "<p:CancelarNfseEnvio "
+            . "xmlns:p=\"http://www.ginfes.com.br/servico_cancelar_nfse_envio_v03.xsd\" "
+            . "xmlns:p1=\"http://www.ginfes.com.br/tipos_v03.xsd\">"
+            . "<Pedido>"
+            . "<p1:InfPedidoCancelamento Id=\"$id\">"
+            . "<p1:IdentificacaoNfse>"
+            . "<p1:Numero>$numero</p1:Numero>"
+            . "<p1:Cnpj>" . $this->config->cnpj . "</p1:Cnpj>"
+            . "<p1:InscricaoMunicipal>" . $this->config->im . "</p1:InscricaoMunicipal>"
+            . "<p1:CodigoMunicipio>" . $this->config->cmun . "</p1:CodigoMunicipio>"
+            . "</p1:IdentificacaoNfse>"
+            . "<p1:CodigoCancelamento>$codigo</p1:CodigoCancelamento>"
+            . "</p1:InfPedidoCancelamento>"
             . "</Pedido>"
-            . "</CancelarNfseEnvio>";
+            . "</p:CancelarNfseEnvio>";
 
         $content = Signer::sign(
             $this->certificate,
@@ -265,7 +280,6 @@ class Tools extends BaseTools
             'CancelarNfseEnvio'
         );
         $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
-        //header("Content-type: text/xml");echo $content;exit;
         Validator::isValid($xml, $this->xsdpath . '/servico_cancelar_nfse_envio_v03.xsd');
         $response = $this->send($content, $operation);
         return $response;
@@ -303,7 +317,6 @@ class Tools extends BaseTools
             [false, false, null, null]
         );
         $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
-        //header("Content-type: text/xml");echo $content;exit;
         Validator::isValid($content, $this->xsdpath . '/servico_cancelar_nfse_envio_v02.xsd');
         $this->setVersion("2");
         $response = $this->send($content, $operation);

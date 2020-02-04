@@ -33,9 +33,9 @@ try {
 
     $id = 'C201800000000001';
     $numero = '201800000';
+    $versao = "3"; // versao 2 funciona em algumas cidades e a 3 em outras
 
-    //$response = $tools->cancelarNfseV2($numero);
-    $response = $tools->cancelarNfseV3($numero, $tools::ERRO_EMISSAO, $id);
+    $response = $tools->cancelarNfse($numero, $tools::ERRO_EMISSAO, $id, $versao);
 
     //echo FakePretty::prettyPrint($response, '');
     //header("Content-type: text/plain");echo $response;

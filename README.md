@@ -1,6 +1,6 @@
-# sped-nfse-nacional
+# sped-nfse-ginfes
 
-[![Join the chat at https://gitter.im/nfephp-org/sped-nfse-nacional](https://badges.gitter.im/nfephp-org/sped-nfse-nacional.svg)](https://gitter.im/nfephp-org/sped-nfse-nacional?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/nfephp-org/sped-nfse-ginfes](https://badges.gitter.im/nfephp-org/sped-nfse-ginfes.svg)](https://gitter.im/nfephp-org/sped-nfse-nacional?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Api para comunicação com webservices do Projeto NFSe Nacional
 
@@ -72,18 +72,18 @@ Este é um projeto totalmente *OpenSource*, para usa-lo e modifica-lo você não
 
 *Durante a fase de desenvolvimento e testes este pacote deve ser instalado com:*
 ```bash
-composer require nfephp-org/sped-nfse-nacional:dev-master
+composer require nfephp-org/sped-nfse-ginfes:dev-master
 ```
 
 *Ou ainda,*
 ```bash
-composer require nfephp-org/sped-nfse-nacional:dev-master --prefer-dist
+composer require nfephp-org/sped-nfse-ginfes:dev-master --prefer-dist
 ```
 
 *Ou ainda alterando o composer.json do seu aplicativo inserindo:*
 ```json
 "require": {
-    "nfephp-org/sped-nfse-nacional" : "dev-master"
+    "nfephp-org/sped-nfse-ginfes" : "dev-master"
 }
 ```
 
@@ -95,12 +95,12 @@ composer require nfephp-org/sped-nfse-nacional:dev-master --prefer-dist
 
 *Após os stable realeases estarem disponíveis, este pacote poderá ser instalado com:*
 ```bash
-composer require nfephp-org/sped-nfse-nacional
+composer require nfephp-org/sped-nfse-ginfes
 ```
 Ou ainda alterando o composer.json do seu aplicativo inserindo:
 ```json
 "require": {
-    "nfephp-org/sped-sped-nfse-nacional" : "^1.0"
+    "nfephp-org/sped-sped-nfse-ginfes" : "^1.0"
 }
 ```
 
@@ -120,32 +120,32 @@ Caso você encontre algum problema relativo a segurança, por favor envie um ema
 
 ## Credits
 
-Roberto L. Machado (owner and developer)
+Cleiton Perin (owner and developer)
 
 ## License
 
 Este pacote está diponibilizado sob LGPLv3 ou MIT License (MIT). Leia  [Arquivo de Licença](LICENSE.md) para maiores informações.
 
 
-[ico-stable]: https://poser.pugx.org/nfephp-org/sped-nfse-nacional/version
-[ico-stars]: https://img.shields.io/github/stars/nfephp-org/sped-nfse-nacional.svg?style=flat-square
-[ico-forks]: https://img.shields.io/github/forks/nfephp-org/sped-nfse-nacional.svg?style=flat-square
-[ico-issues]: https://img.shields.io/github/issues/nfephp-org/sped-nfse-nacional.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/nfephp-org/sped-nfse-nacional/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/nfephp-org/sped-nfse-nacional.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/nfephp-org/sped-nfse-nacional.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/nfephp-org/sped-nfse-nacional.svg?style=flat-square
-[ico-version]: https://img.shields.io/packagist/v/nfephp-org/sped-nfse-nacional.svg?style=flat-square
+[ico-stable]: https://poser.pugx.org/nfephp-org/sped-nfse-ginfes/version
+[ico-stars]: https://img.shields.io/github/stars/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
+[ico-forks]: https://img.shields.io/github/forks/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
+[ico-issues]: https://img.shields.io/github/issues/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/nfephp-org/sped-nfse-ginfes/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/nfephp-org/sped-nfse-ginfes.svg?style=flat-square
 [ico-license]: https://poser.pugx.org/nfephp-org/nfephp/license.svg?style=flat-square
 [ico-gitter]: https://img.shields.io/badge/GITTER-4%20users%20online-green.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/nfephp-org/sped-nfse-nacional
-[link-travis]: https://travis-ci.org/nfephp-org/sped-nfse-nacional
-[link-scrutinizer]: https://scrutinizer-ci.com/g/nfephp-org/sped-nfse-nacional/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/nfephp-org/sped-nfse-nacional
-[link-downloads]: https://packagist.org/packages/nfephp-org/sped-nfse-nacional
+[link-packagist]: https://packagist.org/packages/nfephp-org/sped-nfse-ginfes
+[link-travis]: https://travis-ci.org/nfephp-org/sped-nfse-ginfes
+[link-scrutinizer]: https://scrutinizer-ci.com/g/nfephp-org/sped-nfse-ginfes/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/nfephp-org/sped-nfse-ginfes
+[link-downloads]: https://packagist.org/packages/nfephp-org/sped-nfse-ginfes
 [link-author]: https://github.com/nfephp-org
-[link-issues]: https://github.com/nfephp-org/sped-nfse-nacional/issues
-[link-forks]: https://github.com/nfephp-org/sped-nfse-nacional/network
-[link-stars]: https://github.com/nfephp-org/sped-nfse-nacional/stargazers
-[link-gitter]: https://gitter.im/nfephp-org/sped-nfse-nacional?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[link-issues]: https://github.com/nfephp-org/sped-nfse-ginfes/issues
+[link-forks]: https://github.com/nfephp-org/sped-nfse-ginfes/network
+[link-stars]: https://github.com/nfephp-org/sped-nfse-ginfes/stargazers
+[link-gitter]: https://gitter.im/nfephp-org/sped-nfse-ginfes?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge

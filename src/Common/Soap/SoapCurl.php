@@ -7,12 +7,12 @@ namespace NFePHP\NFSeGinfes\Common\Soap;
  *
  * @category  NFePHP
  * @package   NFePHP\NFSeGinfes
- * @copyright NFePHP Copyright (c) 2016
+ * @copyright NFePHP Copyright (c) 2020
  * @license   http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license   https://opensource.org/licenses/MIT MIT
  * @license   http://www.gnu.org/licenses/gpl.txt GPLv3+
- * @author    Roberto L. Machado <linux.rlm at gmail dot com>
- * @link      http://github.com/nfephp-org/sped-nfse-nacional for the canonical source repository
+ * @author    Cleiton Perin <cperin20 at gmail dot com>
+ * @link      http://github.com/nfephp-org/sped-nfse-ginfes for the canonical source repository
  */
 
 use NFePHP\NFSeGinfes\Common\Soap\SoapBase;
@@ -84,7 +84,6 @@ class SoapCurl extends SoapBase implements SoapInterface
                 curl_setopt($oCurl, CURLOPT_HTTPHEADER, $parameters);
             }
             $response = curl_exec($oCurl);
-            //header("Content-type: text/plain");echo $response;exit;
             $this->soaperror = curl_error($oCurl);
             $ainfo = curl_getinfo($oCurl);
             if (is_array($ainfo)) {

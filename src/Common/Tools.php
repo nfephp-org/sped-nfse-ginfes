@@ -7,12 +7,12 @@ namespace NFePHP\NFSeGinfes\Common;
  *
  * @category  NFePHP
  * @package   NFePHP\NFSeGinfes
- * @copyright NFePHP Copyright (c) 2008-2018
+ * @copyright NFePHP Copyright (c) 2020
  * @license   http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license   https://opensource.org/licenses/MIT MIT
  * @license   http://www.gnu.org/licenses/gpl.txt GPLv3+
- * @author    Roberto L. Machado <linux.rlm at gmail dot com>
- * @link      http://github.com/nfephp-org/sped-nfse-nacional for the canonical source repository
+ * @author    Cleiton Perin <cperin20 at gmail dot com>
+ * @link      http://github.com/nfephp-org/sped-nfse-ginfes for the canonical source repository
  */
 
 use NFePHP\Common\Certificate;
@@ -43,7 +43,6 @@ class Tools
     {
         $this->config = json_decode($config);
         $this->certificate = $cert;
-        $this->buildPrestadorTag();
         $this->wsobj = $this->loadWsobj($this->config->cmun);
         $this->environment = 'homologacao';
         if ($this->config->tpamb === 1) {
@@ -80,17 +79,6 @@ class Tools
     public function setVersion($version)
     {
         $this->version = $version;
-    }
-
-    /**
-     * Build tag Prestador
-     */
-    protected function buildPrestadorTag()
-    {
-        $this->prestador = "<Prestador>"
-            . "<Cnpj>" . $this->config->cnpj . "</Cnpj>"
-            . "<InscricaoMunicipal>" . $this->config->im . "</InscricaoMunicipal>"
-            . "</Prestador>";
     }
 
     /**
@@ -211,32 +199,4 @@ class Tools
         return $env;
     }
 
-    /**
-     * Create tag Prestador and insert into RPS xml
-     * @param RpsInterface $rps
-     * @return string RPS XML (not signed)
-     */
-    protected function putPrestadorInRps(RpsInterface $rps)
-    {
-        $dom = new Dom('1.0', 'UTF-8');
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = false;
-        $dom->loadXML($rps->render());
-        $referenceNode = $dom->getElementsByTagName('Servico')->item(0);
-        $node = $dom->createElement('Prestador');
-        $dom->addChild(
-            $node,
-            "Cnpj",
-            $this->config->cnpj,
-            true
-        );
-        $dom->addChild(
-            $node,
-            "InscricaoMunicipal",
-            $this->config->im,
-            true
-        );
-        $dom->insertAfter($node, $referenceNode);
-        return $dom->saveXML($dom->documentElement);
-    }
 }
