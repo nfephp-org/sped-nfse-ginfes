@@ -4,37 +4,35 @@ ini_set('display_errors', 'On');
 require_once '../bootstrap.php';
 
 use NFePHP\Common\Certificate;
-use NFePHP\NFSeGinfes\Tools;
-use NFePHP\NFSeGinfes\Rps;
-use NFePHP\NFSeGinfes\Common\Soap\SoapFake;
 use NFePHP\NFSeGinfes\Common\FakePretty;
-use NFePHP\NFSeGinfes\Common\Standardize;
+use NFePHP\NFSeGinfes\Common\Soap\SoapFake;
+use NFePHP\NFSeGinfes\Rps;
+use NFePHP\NFSeGinfes\Tools;
 
 try {
 
     $config = [
-        'cnpj' => '02993595000159',
-        'im' => '121782',
-        'cmun' => '3547809',
-        'razao' => 'Andriel Allison',
+        'cnpj' => '99999999000191',
+        'im' => '1733160024',
+        'cmun' => '2408102',
+        'razao' => 'Empresa Test Ltda',
         'tpamb' => 2
     ];
 
-
     $configJson = json_encode($config);
 
-    $content = file_get_contents('C:\Users\Cleiton\Downloads\ginfes\CERTIFICADO DIGITAL 2019 - THS.pfx');
-    $password = '151610';
+    $content = file_get_contents('expired_certificate.pfx');
+    $password = 'associacao';
     $cert = Certificate::readPfx($content, $password);
-    
+
     $soap = new SoapFake();
     $soap->disableCertValidation(true);
-    
+
     $tools = new Tools($configJson, $cert);
-    //$tools->loadSoapClass($soap);
-    
+    $tools->loadSoapClass($soap);
+
     $arps = [];
-    
+
     $std = new \stdClass();
     $std->version = '1.00';
     $std->IdentificacaoRps = new \stdClass();
@@ -43,18 +41,18 @@ try {
     $std->IdentificacaoRps->Tipo = 1; //1 - RPS 2-Nota Fiscal Conjugada (Mista) 3-Cupom
     $std->DataEmissao = '2020-02-03T12:33:22';
     $std->NaturezaOperacao = 1; // 1 – Tributação no município
-                                // 2 - Tributação fora do município
-                                // 3 - Isenção
-                                // 4 - Imune
-                                // 5 – Exigibilidade suspensa por decisão judicial
-                                // 6 – Exigibilidade suspensa por procedimento administrativo
+    // 2 - Tributação fora do município
+    // 3 - Isenção
+    // 4 - Imune
+    // 5 – Exigibilidade suspensa por decisão judicial
+    // 6 – Exigibilidade suspensa por procedimento administrativo
 
     $std->RegimeEspecialTributacao = 5;    // 1 – Microempresa municipal
-                                           // 2 - Estimativa
-                                           // 3 – Sociedade de profissionais
-                                           // 4 – Cooperativa
-                                           // 5 – MEI – Simples Nacional
-                                           // 6 – ME EPP – Simples Nacional
+    // 2 - Estimativa
+    // 3 – Sociedade de profissionais
+    // 4 – Cooperativa
+    // 5 – MEI – Simples Nacional
+    // 6 – ME EPP – Simples Nacional
 
     $std->OptanteSimplesNacional = 1; //1 - SIM 2 - Não
     $std->IncentivadorCultural = 2; //1 - SIM 2 - Não
@@ -74,7 +72,7 @@ try {
     $std->Tomador->Endereco->CodigoMunicipio = 3547809;
     $std->Tomador->Endereco->Uf = 'SP';
     $std->Tomador->Endereco->Cep = '08320370';
-    
+
     $std->Servico = new \stdClass();
     $std->Servico->ItemListaServico = '1.07';
     $std->Servico->CodigoTributacaoMunicipio = '1.07 / 620910000';
@@ -98,28 +96,23 @@ try {
     $std->Servico->Valores->ValorLiquidoNfse = 100.00;
     $std->Servico->Valores->DescontoIncondicionado = 0.00;
     $std->Servico->Valores->DescontoCondicionado = null;
-    /*
+
     $std->IntermediarioServico = new \stdClass();
-    $std->IntermediarioServico->RazaoSocial = 'INSCRICAO DE TESTE SIATU - D AGUA -PAULINO S'; 
+    $std->IntermediarioServico->RazaoSocial = 'INSCRICAO DE TESTE SIATU - D AGUA -PAULINO S';
     $std->IntermediarioServico->Cnpj = '99999999000191';
     $std->IntermediarioServico->InscricaoMunicipal = '8041700010';
-    
+
     $std->ConstrucaoCivil = new \stdClass();
     $std->ConstrucaoCivil->CodigoObra = '1234';
     $std->ConstrucaoCivil->Art = '1234';
-    */
+
     $arps[] = new Rps($std);
-    
+
     $lote = time();
     $response = $tools->recepcionarLoteRps($arps, $lote);
-    
-    //echo FakePretty::prettyPrint($response, '');
-    //header("Content-type: text/plain");echo $response;
 
-    $st = new Standardize();
-    $std = $st->toStd($response);
-    var_dump($std);
- 
+    echo FakePretty::prettyPrint($response, '');
+
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

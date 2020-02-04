@@ -16,11 +16,9 @@ namespace NFePHP\NFSeGinfes\Common;
  */
 
 use NFePHP\Common\Certificate;
-use NFePHP\NFSeGinfes\RpsInterface;
 use NFePHP\Common\DOMImproved as Dom;
-use NFePHP\NFSeGinfes\Common\Signer;
-use NFePHP\NFSeGinfes\Common\Soap\SoapInterface;
 use NFePHP\NFSeGinfes\Common\Soap\SoapCurl;
+use NFePHP\NFSeGinfes\Common\Soap\SoapInterface;
 
 class Tools
 {
@@ -127,7 +125,6 @@ class Tools
             $this->soap = new SoapCurl($this->certificate);
         }
         $msgSize = strlen($request);
-        // ;action="https://{$this->environment}.ginfes.com.br/ServiceGinfesImpl"
         $parameters = [
             "Content-Type: application/soap+xml;charset=utf-8",
             "SOAPAction: \"$action\"",

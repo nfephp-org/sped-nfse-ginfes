@@ -122,6 +122,14 @@ class Tools extends BaseTools
         return $this->send($content, $operation);
     }
 
+    /**
+     * Consulta Lote RPS (SINCRONO) após envio com recepcionarLoteRps() (ASSINCRONO)
+     * complemento do processo de envio assincono.
+     * Que deve ser usado quando temos mais de um RPS sendo enviado
+     * por vez.
+     * @param string $protocolo
+     * @return string
+     */
     public function consultarLoteRps($protocolo)
     {
         $operation = "ConsultarLoteRpsV3";
