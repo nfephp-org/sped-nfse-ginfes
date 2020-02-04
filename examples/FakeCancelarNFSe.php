@@ -32,7 +32,7 @@ try {
 
     $id = 'C201800000000001';
     $numero = '1691';
-    $versao = "2"; // versao 2 funciona em algumas cidades e a 3 em outras
+    $versao = "3"; // versao 2 funciona em algumas cidades e a 3 em outras
 
     $response = $tools->cancelarNfse($numero, $tools::ERRO_EMISSAO, $id, $versao);
 

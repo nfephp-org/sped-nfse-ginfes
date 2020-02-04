@@ -255,7 +255,7 @@ class Tools extends BaseTools
      * @param string $versao
      * @return string
      */
-    public function cancelarNfse($numero, $codigo = self::ERRO_EMISSAO, $id = null, $versao = "3")
+    public function cancelarNfse($numero, $codigo = self::ERRO_EMISSAO, $id = null, $versao = "2")
     {
         if ($versao == "3") {
             return $this->cancelarNfseV3($numero, $codigo, $id);
