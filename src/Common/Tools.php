@@ -3,7 +3,7 @@
 namespace NFePHP\NFSeGinfes\Common;
 
 /**
- * Auxiar Tools Class for comunications with NFSe webserver in Nacional Standard
+ * Auxiar Tools Class for comunications with NFSe webserver in Ginfes Standard
  *
  * @category  NFePHP
  * @package   NFePHP\NFSeGinfes

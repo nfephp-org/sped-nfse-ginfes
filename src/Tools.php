@@ -3,7 +3,7 @@
 namespace NFePHP\NFSeGinfes;
 
 /**
- * Class for comunications with NFSe webserver in Nacional Standard
+ * Class for comunications with NFSe webserver in Ginfes Standard
  *
  * @category  NFePHP
  * @package   NFePHP\NFSeGinfes
@@ -95,7 +95,7 @@ class Tools extends BaseTools
      * 3 – Processado com Erro
      * 4 – Processado com Sucesso
      */
-    public function consultarLoteRps($protocolo)
+    public function consultarSituacaoLote($protocolo)
     {
         $operation = "ConsultarSituacaoLoteRpsV3";
         $content = "<ConsultarSituacaoLoteRpsEnvio "
@@ -122,6 +122,32 @@ class Tools extends BaseTools
         return $this->send($content, $operation);
     }
 
+    public function consultarLoteRps($protocolo)
+    {
+        $operation = "ConsultarLoteRpsV3";
+        $content = "<ConsultarLoteRpsEnvio "
+            . "xmlns:tipos=\"http://www.ginfes.com.br/tipos_v03.xsd\" "
+            . "xmlns=\"http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd\">"
+            . "<Prestador>"
+            . "<tipos:Cnpj>" . $this->config->cnpj . "</tipos:Cnpj>"
+            . "<tipos:InscricaoMunicipal>" . $this->config->im . "</tipos:InscricaoMunicipal>"
+            . "</Prestador>"
+            . "<Protocolo>$protocolo</Protocolo>"
+            . "</ConsultarLoteRpsEnvio>";
+
+        //assinatura dos dados
+        $content = Signer::sign(
+            $this->certificate,
+            $content,
+            'ConsultarLoteRpsEnvio',
+            '',
+            OPENSSL_ALGO_SHA1,
+            [false, false, null, null]
+        );
+        $content = str_replace(['<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>'], '', $content);
+        Validator::isValid($content, $this->xsdpath . '/servico_consultar_lote_rps_envio_v03.xsd');
+        return $this->send($content, $operation);
+    }
 
     /**
      * Consulta NFSe emitidas em um periodo e por tomador (SINCRONO)

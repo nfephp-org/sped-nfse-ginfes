@@ -33,7 +33,7 @@ try {
 
     $protocolo = '10318106';
 
-    $response = $tools->consultarLoteRps($protocolo);
+    $response = $tools->consultarSituacaoLote($protocolo);
 
     //echo FakePretty::prettyPrint($response, '');
     header("Content-type: text/plain");echo $response;exit;

@@ -32,10 +32,10 @@ try {
     //$tools->loadSoapClass($soap);
 
     $id = 'C201800000000001';
-    $numero = '201800000';
-    $versao = "3"; // versao 2 funciona em algumas cidades e a 3 em outras
+    $numero = '1691';
+    $versao = "2"; // versao 2 funciona em algumas cidades e a 3 em outras
 
-    $response = $tools->cancelarNfse($numero, $tools::ERRO_EMISSAO, $id, $versao);
+    $response = $tools->cancelarNfse($numero, 2, $id, $versao);
 
     //echo FakePretty::prettyPrint($response, '');
     //header("Content-type: text/plain");echo $response;

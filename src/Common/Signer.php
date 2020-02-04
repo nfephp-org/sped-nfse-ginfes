@@ -3,7 +3,7 @@
 namespace NFePHP\NFSeGinfes\Common;
 
 /**
- * Class for signing XML in Nacional Standard NFSe
+ * Class for signing XML in Ginfes Standard NFSe
  *
  * @category  NFePHP
  * @package   NFePHP\NFSeGinfes

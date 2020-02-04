@@ -38,8 +38,8 @@ try {
     $std = new \stdClass();
     $std->version = '1.00';
     $std->IdentificacaoRps = new \stdClass();
-    $std->IdentificacaoRps->Numero = 2000; //limite 15 digitos
-    $std->IdentificacaoRps->Serie = '1'; //BH deve ser string numerico
+    $std->IdentificacaoRps->Numero = 1675; //limite 15 digitos
+    $std->IdentificacaoRps->Serie = 'THS'; //BH deve ser string numerico
     $std->IdentificacaoRps->Tipo = 1; //1 - RPS 2-Nota Fiscal Conjugada (Mista) 3-Cupom
     $std->DataEmissao = '2020-02-03T12:33:22';
     $std->NaturezaOperacao = 1; // 1 – Tributação no município
@@ -76,28 +76,28 @@ try {
     $std->Tomador->Endereco->Cep = '08320370';
     
     $std->Servico = new \stdClass();
-    $std->Servico->ItemListaServico = '107';
-    $std->Servico->CodigoTributacaoMunicipio = '620910000';
+    $std->Servico->ItemListaServico = '1.07';
+    $std->Servico->CodigoTributacaoMunicipio = '1.07 / 620910000';
     $std->Servico->Discriminacao = 'Teste de RPS';
     $std->Servico->CodigoMunicipio = 3547809;
 
     $std->Servico->Valores = new \stdClass();
     $std->Servico->Valores->ValorServicos = 100.00;
-    $std->Servico->Valores->ValorDeducoes = 10.00;
-    $std->Servico->Valores->ValorPis = 10.00;
-    $std->Servico->Valores->ValorCofins = 10.00;
-    $std->Servico->Valores->ValorInss = 10.00;
-    $std->Servico->Valores->ValorIr = 10.00;
-    $std->Servico->Valores->ValorCsll = 10.00;
-    $std->Servico->Valores->IssRetido = 1;
-    $std->Servico->Valores->ValorIss = 10.00;
-    $std->Servico->Valores->ValorIssRetido = 10.00;
-    $std->Servico->Valores->OutrasRetencoes = 10.00;
-    $std->Servico->Valores->BaseCalculo = 10.00;
+    $std->Servico->Valores->ValorDeducoes = 0.00;
+    $std->Servico->Valores->ValorPis = 0.00;
+    $std->Servico->Valores->ValorCofins = 0.00;
+    $std->Servico->Valores->ValorInss = 0.00;
+    $std->Servico->Valores->ValorIr = 0.00;
+    $std->Servico->Valores->ValorCsll = 0.00;
+    $std->Servico->Valores->IssRetido = 2;
+    $std->Servico->Valores->ValorIss = 2.00;
+    $std->Servico->Valores->ValorIssRetido = 0.00;
+    $std->Servico->Valores->OutrasRetencoes = 0.00;
+    $std->Servico->Valores->BaseCalculo = 100.00;
     $std->Servico->Valores->Aliquota = 0.02;
-    $std->Servico->Valores->ValorLiquidoNfse = 10.00;
-    $std->Servico->Valores->DescontoIncondicionado = 10.00;
-    $std->Servico->Valores->DescontoCondicionado = 10.00;
+    $std->Servico->Valores->ValorLiquidoNfse = 100.00;
+    $std->Servico->Valores->DescontoIncondicionado = 0.00;
+    $std->Servico->Valores->DescontoCondicionado = null;
     /*
     $std->IntermediarioServico = new \stdClass();
     $std->IntermediarioServico->RazaoSocial = 'INSCRICAO DE TESTE SIATU - D AGUA -PAULINO S'; 
