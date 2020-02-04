@@ -6,13 +6,13 @@ namespace NFePHP\NFSeGinfes\Common\Soap;
  * Soap class interface
  *
  * @category  NFePHP
- * @package   NFePHP\Common\Soap\SoapInterface
- * @copyright NFePHP Copyright (c) 2016
+ * @package   NFePHP\NFSeGinfes
+ * @copyright NFePHP Copyright (c) 2020
  * @license   http://www.gnu.org/licenses/lgpl.txt LGPLv3+
  * @license   https://opensource.org/licenses/MIT MIT
  * @license   http://www.gnu.org/licenses/gpl.txt GPLv3+
- * @author    Roberto L. Machado <linux.rlm at gmail dot com>
- * @link      http://github.com/nfephp-org/sped-nfse for the canonical source repository
+ * @author    Cleiton Perin <cperin20 at gmail dot com>
+ * @link      http://github.com/nfephp-org/sped-nfse-ginfes for the canonical source repository
  */
 
 use NFePHP\Common\Certificate;
@@ -65,20 +65,17 @@ interface SoapInterface
     
     /**
      * Send soap message
-     * @param string $url
      * @param string $operation
+     * @param string $url
      * @param string $action
-     * @param int $soapver
+     * @param string $envelope
      * @param array $parameters
-     * @param array $namespaces
-     * @param \SoapHeader $soapheader
-     * @param string $request
      */
     public function send(
-		$urlwebservice, 
-		$dados, 
-		$metodo,
-		$ambiente,
-		$versao
+        $operation,
+        $url,
+        $action,
+        $envelope,
+        $parameters
     );
 }

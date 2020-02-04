@@ -4,9 +4,9 @@ Todas as contribuições são **bem vindas** e serão totalmente **creditadas** 
 
 *Contributions are **welcome** and will be fully **credited**.*
 
-Nós aceitamos contribuições via "pull request" através do repositório no [GitHub](https://github.com/nfephp-org/sped-nfse-averbacao).
+Nós aceitamos contribuições via "pull request" através do repositório no [GitHub](https://github.com/nfephp-org/sped-nfse-ginfes).
 
-*We accept contributions via Pull Requests on [Github](https://github.com/nfephp-org/sped-cte).*
+*We accept contributions via Pull Requests on [Github](https://github.com/nfephp-org/sped-nfse-ginfes).*
 
 
 # Ambiente
