@@ -166,7 +166,8 @@ class Tools
      */
     protected function createSoapRequest($message, $operation)
     {
-        $cabecalho = "<ns2:cabecalho versao=\"{$this->wsobj->version}\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\">"
+        $cabecalho = "<ns2:cabecalho versao=\"{$this->wsobj->version}\" "
+            . "xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\">"
             . "<versaoDados>{$this->wsobj->version}</versaoDados>"
             . "</ns2:cabecalho>";
 
@@ -195,5 +196,4 @@ class Tools
 
         return $env;
     }
-
 }
