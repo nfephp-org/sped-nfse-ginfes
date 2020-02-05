@@ -552,7 +552,7 @@ class Factory
         $this->dom->addChild(
             $node,
             "tipos:CodigoMunicipio",
-            $orgao->orgaogerador,
+            $orgao->codigomunicipio,
             true
         );
         $this->dom->addChild(
