@@ -4,8 +4,6 @@ Api para comunicação com webservices do Projeto NFSe Ginfes
 
 ## BETHA TESTS
 
-*Utilize o chat do Gitter para iniciar discussões especificas sobre o desenvolvimento deste pacote.*
-
 
 [![Latest Stable Version][ico-stable]][link-packagist]
 [![Build Status][ico-travis]][link-travis]
@@ -27,7 +25,6 @@ Este pacote é aderente com os [PSR-1], [PSR-2] e [PSR-4]. Se você observar neg
 
 Não deixe de se cadastrar no [grupo de discussão do NFePHP](http://groups.google.com/group/nfephp) para acompanhar o desenvolvimento e participar das discussões e tirar duvidas!
 
-**NOTA: Fique atento pois nem todas as cidades possuem ambientes de homologação.**
 
 ## Municípios atendidos pelo provedor
 
