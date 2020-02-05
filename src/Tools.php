@@ -356,5 +356,4 @@ class Tools extends BaseTools
         $response = $this->send($content, $operation);
         return $response;
     }
-
 }
