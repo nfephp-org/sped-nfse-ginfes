@@ -150,7 +150,7 @@ class Standardize
      * @param string $xml
      * @return string
      */
-    protected function removeNS($xml)
+    public function removeNS($xml)
     {
         $sxe = new \SimpleXMLElement($xml);
         $dom_sxe = dom_import_simplexml($sxe);
@@ -164,9 +164,9 @@ class Standardize
         $xml = $dom->saveXML();
         if (stripos($xml, 'xmlns=') !== false) {
             $xml = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', null, $xml);
-            $xml = str_replace('default:', '', $xml);
             $xml = preg_replace('~[\s]+xmlns:default=[\'"].+?[\'"]~i', null, $xml);
         }
+        $xml = str_replace(['default:', 'ns4:'], '', $xml);
         return $xml;
     }
 }
