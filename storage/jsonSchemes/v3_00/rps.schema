@@ -13,7 +13,7 @@
                 "numero": {
                     "required": true,
                     "type": "integer",
-                    "pattern": "^[0-9]{1,15}"
+                    "pattern": "^[0-9]{1,15}$"
                 },
                 "serie": {
                     "required": true,
@@ -36,27 +36,27 @@
         "naturezaoperacao": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-6]{1}"
+            "pattern": "^[1-6]{1}$"
         },
         "regimeespecialtributacao": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-6]{1}"
+            "pattern": "^[1-6]{1}$"
         },
         "optantesimplesnacional": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-2]{1}"
+            "pattern": "^[1-2]{1}$"
         },
         "incentivadorcultural": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-2]{1}"
+            "pattern": "^[1-2]{1}$"
         },
         "status": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-2]{1}"
+            "pattern": "^[1-2]{1}$"
         },
         "tomador": {
             "required": true,
@@ -65,12 +65,12 @@
                 "cnpj": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{14}"
+                    "pattern": "^[0-9]{14}$"
                 },
                 "cpf": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{11}"
+                    "pattern": "^[0-9]{11}$"
                 },
                 "inscricaomunicipal": {
                     "required": false,
@@ -115,7 +115,7 @@
                         "codigomunicipio": {
                             "required": true,
                             "type": "integer",
-                            "pattern": "^[0-9]{7}"
+                            "pattern": "^[0-9]{7}$"
                         },
                         "uf": {
                             "required": true,
@@ -125,7 +125,7 @@
                         "cep": {
                             "required": true,
                             "type": "integer",
-                            "pattern": "^[0-9]{8}"
+                            "pattern": "^[0-9]{8}$"
                         }
                     }
                 }
@@ -156,7 +156,7 @@
                 "codigomunicipio": {
                     "required": true,
                     "type": "integer",
-                    "pattern": "^[0-9]{7}"
+                    "pattern": "^[0-9]{7}$"
                 },
                 "valores": {
                     "required": true,
@@ -193,7 +193,7 @@
                         "issretido": {
                             "required": true,
                             "type": "integer",
-                            "pattern": "^[1-2]{1}"
+                            "pattern": "^[1-2]{1}$"
                         },
                         "valoriss": {
                             "required": false,
@@ -244,12 +244,12 @@
                 "cnpj": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{14}"
+                    "pattern": "^[0-9]{14}$"
                 },
                 "cpf": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{11}"
+                    "pattern": "^[0-9]{11}$"
                 },
                 "inscricaomunicipal": {
                     "required": false,
@@ -284,7 +284,7 @@
                 "codigomunicipio": {
                     "required": true,
                     "type": "integer",
-                    "pattern": "^[0-9]{7}"
+                    "pattern": "^[0-9]{7}$"
                 },
                 "uf": {
                     "required": true,

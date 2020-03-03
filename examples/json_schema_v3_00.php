@@ -25,7 +25,7 @@ $jsonSchema = '{
                 "numero": {
                     "required": true,
                     "type": "integer",
-                    "pattern": "^[0-9]{1,15}"
+                    "pattern": "^[0-9]{1,15}$"
                 },
                 "serie": {
                     "required": true,
@@ -48,27 +48,27 @@ $jsonSchema = '{
         "naturezaoperacao": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-6]{1}"
+            "pattern": "^[1-6]{1}$"
         },
         "regimeespecialtributacao": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-6]{1}"
+            "pattern": "^[1-6]{1}$"
         },
         "optantesimplesnacional": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-2]{1}"
+            "pattern": "^[1-2]{1}$"
         },
         "incentivadorcultural": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-2]{1}"
+            "pattern": "^[1-2]{1}$"
         },
         "status": {
             "required": true,
             "type": "integer",
-            "pattern": "^[1-2]{1}"
+            "pattern": "^[1-2]{1}$"
         },
         "tomador": {
             "required": true,
@@ -77,12 +77,12 @@ $jsonSchema = '{
                 "cnpj": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{14}"
+                    "pattern": "^[0-9]{14}$"
                 },
                 "cpf": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{11}"
+                    "pattern": "^[0-9]{11}$"
                 },
                 "inscricaomunicipal": {
                     "required": false,
@@ -127,7 +127,7 @@ $jsonSchema = '{
                         "codigomunicipio": {
                             "required": true,
                             "type": "integer",
-                            "pattern": "^[0-9]{7}"
+                            "pattern": "^[0-9]{7}$"
                         },
                         "uf": {
                             "required": true,
@@ -137,7 +137,7 @@ $jsonSchema = '{
                         "cep": {
                             "required": true,
                             "type": "integer",
-                            "pattern": "^[0-9]{8}"
+                            "pattern": "^[0-9]{8}$"
                         }
                     }
                 }
@@ -168,7 +168,7 @@ $jsonSchema = '{
                 "codigomunicipio": {
                     "required": true,
                     "type": "integer",
-                    "pattern": "^[0-9]{7}"
+                    "pattern": "^[0-9]{7}$"
                 },
                 "valores": {
                     "required": true,
@@ -205,7 +205,7 @@ $jsonSchema = '{
                         "issretido": {
                             "required": true,
                             "type": "integer",
-                            "pattern": "^[1-2]{1}"
+                            "pattern": "^[1-2]{1}$"
                         },
                         "valoriss": {
                             "required": false,
@@ -256,12 +256,12 @@ $jsonSchema = '{
                 "cnpj": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{14}"
+                    "pattern": "^[0-9]{14}$"
                 },
                 "cpf": {
                     "required": false,
                     "type": ["string","null"],
-                    "pattern": "^[0-9]{11}"
+                    "pattern": "^[0-9]{11}$"
                 },
                 "inscricaomunicipal": {
                     "required": false,
@@ -296,7 +296,7 @@ $jsonSchema = '{
                 "codigomunicipio": {
                     "required": true,
                     "type": "integer",
-                    "pattern": "^[0-9]{7}"
+                    "pattern": "^[0-9]{7}$"
                 },
                 "uf": {
                     "required": true,
