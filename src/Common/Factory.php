@@ -167,7 +167,7 @@ class Factory
             return;
         }
         $id = $this->std->rpssubstituido;
-        $node = $this->dom->createElement('RpsSubstituido');
+        $node = $this->dom->createElement('tipos:RpsSubstituido');
         $this->dom->addChild(
             $node,
             "tipos:Numero",
