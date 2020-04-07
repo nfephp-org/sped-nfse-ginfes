@@ -363,12 +363,11 @@ class Factory
      */
     protected function addTomador(&$parent)
     {
+        $node = $this->dom->createElement('tipos:Tomador');
         if (!isset($this->std->tomador)) {
-            return;
+            return $parent->appendChild($node);
         }
         $tom = $this->std->tomador;
-
-        $node = $this->dom->createElement('tipos:Tomador');
         $ide = $this->dom->createElement('tipos:IdentificacaoTomador');
         $cpfcnpj = $this->dom->createElement('tipos:CpfCnpj');
         if (isset($tom->cnpj)) {
