@@ -296,15 +296,6 @@
         "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
         "producao_soapns": "http:\/\/producao.ginfes.com.br"
     },
-    "3530508": {
-        "municipio": "Mococa",
-        "uf": "SP",
-        "homologacao": "https:\/\/homologacao.ginfes.com.br\/ServiceGinfesImpl",
-        "producao": "https:\/\/producao.ginfes.com.br\/ServiceGinfesImpl",
-        "version": "3",
-        "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
-        "producao_soapns": "http:\/\/producao.ginfes.com.br"
-    },
     "3531902": {
         "municipio": "Morro Agudo",
         "uf": "SP",
@@ -404,27 +395,9 @@
         "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
         "producao_soapns": "http:\/\/producao.ginfes.com.br"
     },
-    "3304300": {
-        "municipio": "Rio Bonito",
-        "uf": "RJ",
-        "homologacao": "https:\/\/homologacao.ginfes.com.br\/ServiceGinfesImpl",
-        "producao": "https:\/\/producao.ginfes.com.br\/ServiceGinfesImpl",
-        "version": "3",
-        "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
-        "producao_soapns": "http:\/\/producao.ginfes.com.br"
-    },
     "3543907": {
         "municipio": "Rio Claro",
         "uf": "SP",
-        "homologacao": "https:\/\/homologacao.ginfes.com.br\/ServiceGinfesImpl",
-        "producao": "https:\/\/producao.ginfes.com.br\/ServiceGinfesImpl",
-        "version": "3",
-        "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
-        "producao_soapns": "http:\/\/producao.ginfes.com.br"
-    },
-    "3156908": {
-        "municipio": "Sacramento",
-        "uf": "MG",
         "homologacao": "https:\/\/homologacao.ginfes.com.br\/ServiceGinfesImpl",
         "producao": "https:\/\/producao.ginfes.com.br\/ServiceGinfesImpl",
         "version": "3",
