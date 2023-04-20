@@ -1,5 +1,5 @@
 {
-    "name": "nfephp-org/sped-nfse-ginfes",
+    "name": "rlacerda83/sped-nfse-ginfes",
     "type": "library",
     "description": "API para geração e comunicação de RPS e NFSe no padão Ginfes.",
     "keywords": ["nfe","nfse","sped","nfephp"],

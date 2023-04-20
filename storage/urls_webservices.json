@@ -188,6 +188,15 @@
         "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
         "producao_soapns": "http:\/\/producao.ginfes.com.br"
     },
+    "3523107": {
+        "municipio": "Itaquaquecetuba",
+        "uf": "SP",
+        "homologacao": "https:\/\/homologacao.ginfes.com.br\/ServiceGinfesImpl",
+        "producao": "https:\/\/producao.ginfes.com.br\/ServiceGinfesImpl",
+        "version": "3",
+        "homologacao_soapns": "http:\/\/homologacao.ginfes.com.br",
+        "producao_soapns": "http:\/\/producao.ginfes.com.br"
+    },
     "3133808": {
         "municipio": "Itauna",
         "uf": "MG",
