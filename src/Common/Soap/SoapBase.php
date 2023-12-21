@@ -21,7 +21,7 @@ use NFePHP\Common\Exception\SoapException;
 use NFePHP\Common\Exception\RuntimeException;
 use NFePHP\Common\Strings;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Psr\Log\LoggerInterface;
 
 abstract class SoapBase implements SoapInterface
@@ -99,7 +99,7 @@ abstract class SoapBase implements SoapInterface
      */
     protected $disableCertValidation = false;
     /**
-     * @var \League\Flysystem\Adapter\Local
+     * @var \League\Flysystem\Local\LocalFilesystemAdapter;
      */
     protected $adapter;
     /**
@@ -160,7 +160,7 @@ abstract class SoapBase implements SoapInterface
         $this->certificate = $this->checkCertValidity($certificate);
         $this->setTemporaryFolder(sys_get_temp_dir() . '/sped/');
     }
-    
+
     /**
      * Check if certificate is valid
      * @param Certificate $certificate
@@ -181,7 +181,7 @@ abstract class SoapBase implements SoapInterface
         }
         return $certificate;
     }
-    
+
     /**
      * Destructor
      * Clean temporary files
@@ -190,7 +190,7 @@ abstract class SoapBase implements SoapInterface
     {
         $this->removeTemporarilyFiles();
     }
-    
+
     /**
      * Disables the security checking of host and peer certificates
      * @param bool $flag
@@ -200,7 +200,7 @@ abstract class SoapBase implements SoapInterface
         $this->disablesec = $flag;
         return $this->disablesec;
     }
-    
+
     /**
      * ONlY for tests
      * @param bool $flag
@@ -222,7 +222,7 @@ abstract class SoapBase implements SoapInterface
             $this->casefaz = $capath;
         }
     }
-    
+
     /**
      * Set option to encript private key before save in filesystem
      * for an additional layer of protection
@@ -233,7 +233,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->encriptPrivateKey = $encript;
     }
-    
+
     /**
      * Set another temporayfolder for saving certificates for SOAP utilization
      * @param string $folderRealPath
@@ -243,14 +243,14 @@ abstract class SoapBase implements SoapInterface
         $this->tempdir = $folderRealPath;
         $this->setLocalFolder($folderRealPath);
     }
-    
+
     /**
      * Set Local folder for flysystem
      * @param string $folder
      */
     protected function setLocalFolder($folder = '')
     {
-        $this->adapter = new Local($folder);
+        $this->adapter = new LocalFilesystemAdapter($folder);
         $this->filesystem = new Filesystem($this->adapter);
     }
 
@@ -263,7 +263,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->debugmode = $value;
     }
-    
+
     /**
      * Set certificate class for SSL comunications
      * @param Certificate $certificate
@@ -272,7 +272,7 @@ abstract class SoapBase implements SoapInterface
     {
         $this->certificate = $this->checkCertValidity($certificate);
     }
-    
+
     /**
      * Set logger class
      * @param LoggerInterface $logger
@@ -281,7 +281,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->logger = $logger;
     }
-    
+
     /**
      * Set timeout for communication
      * @param int $timesecs
@@ -290,7 +290,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->soaptimeout = $timesecs;
     }
-    
+
     /**
      * Set security protocol
      * @param int $protocol
@@ -300,7 +300,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->soapprotocol = $protocol;
     }
-    
+
     /**
      * Set prefixes
      * @param array $prefixes
@@ -310,7 +310,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->prefixes = $prefixes;
     }
-    
+
     /**
      * Set proxy parameters
      * @param string $ip
@@ -325,7 +325,7 @@ abstract class SoapBase implements SoapInterface
         $this->proxyUser = $user;
         $this->proxyPass = $password;
     }
-    
+
     /**
      * Send message to webservice
      */
@@ -336,7 +336,7 @@ abstract class SoapBase implements SoapInterface
         $envelope,
         $parameters
     );
-    
+
     /**
      * Mount soap envelope
      * @param string $request
@@ -372,7 +372,7 @@ abstract class SoapBase implements SoapInterface
             . "</$prefix:Envelope>";
         return $envelope;
     }
-    
+
     /**
      * Temporarily saves the certificate keys for use cURL or SoapClient
      */
@@ -419,7 +419,7 @@ abstract class SoapBase implements SoapInterface
             );
         }
     }
-    
+
     /**
      * Delete all files in folder
      */
@@ -457,7 +457,7 @@ abstract class SoapBase implements SoapInterface
             }
         }
     }
-    
+
     /**
      * Save request envelope and response for debug reasons
      * @param string $operation
