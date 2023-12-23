@@ -401,15 +401,15 @@ abstract class SoapBase implements SoapInterface
                 $this->temppass
             );
         }
-        $ret &= $this->filesystem->put(
+        $ret &= $this->filesystem->write(
             $this->prifile,
             $private
         );
-        $ret &= $this->filesystem->put(
+        $ret &= $this->filesystem->write(
             $this->pubfile,
             $this->certificate->publicKey
         );
-        $ret &= $this->filesystem->put(
+        $ret &= $this->filesystem->write(
             $this->certfile,
             $private."{$this->certificate}"
         );
@@ -478,11 +478,11 @@ abstract class SoapBase implements SoapInterface
         $now = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $time = substr($now->format("ymdHisu"), 0, 16);
         try {
-            $this->filesystem->put(
+            $this->filesystem->write(
                 $this->debugdir . $time . "_" . $operation . "_sol.txt",
                 $request
             );
-            $this->filesystem->put(
+            $this->filesystem->write(
                 $this->debugdir . $time . "_" . $operation . "_res.txt",
                 $response
             );
