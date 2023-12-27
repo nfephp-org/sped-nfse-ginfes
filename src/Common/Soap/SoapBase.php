@@ -23,6 +23,7 @@ use NFePHP\Common\Strings;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Psr\Log\LoggerInterface;
+use Illuminate\Support\Facades\File;
 
 abstract class SoapBase implements SoapInterface
 {
@@ -158,7 +159,7 @@ abstract class SoapBase implements SoapInterface
     ) {
         $this->logger = $logger;
         $this->certificate = $this->checkCertValidity($certificate);
-        $this->setTemporaryFolder(sys_get_temp_dir() . '/sped/');
+        $this->setTemporaryFolder(storage_path('nfe') . '/');
     }
 
     /**
@@ -250,8 +251,8 @@ abstract class SoapBase implements SoapInterface
      */
     protected function setLocalFolder($folder = '')
     {
-        $this->adapter = new LocalFilesystemAdapter($folder);
-        $this->filesystem = new Filesystem($this->adapter);
+        //$this->adapter = new LocalFilesystemAdapter($folder);
+        $this->filesystem = new \NFePHP\Common\Files($folder);
     }
 
     /**
@@ -383,10 +384,12 @@ abstract class SoapBase implements SoapInterface
                 'Certificate not found.'
             );
         }
+
         $this->certsdir = $this->certificate->getCnpj() . '/certs/';
         $this->prifile = $this->certsdir. Strings::randomString(10).'.pem';
         $this->pubfile = $this->certsdir . Strings::randomString(10).'.pem';
         $this->certfile = $this->certsdir . Strings::randomString(10).'.pem';
+
         $ret = true;
         $private = $this->certificate->privateKey;
         if ($this->encriptPrivateKey) {
@@ -401,15 +404,17 @@ abstract class SoapBase implements SoapInterface
                 $this->temppass
             );
         }
-        $ret &= $this->filesystem->write(
+
+        $ret &= $this->filesystem->put(
             $this->prifile,
             $private
         );
-        $ret &= $this->filesystem->write(
+
+        $ret &= $this->filesystem->put(
             $this->pubfile,
             $this->certificate->publicKey
         );
-        $ret &= $this->filesystem->write(
+        $ret &= $this->filesystem->put(
             $this->certfile,
             $private."{$this->certificate}"
         );
@@ -418,6 +423,8 @@ abstract class SoapBase implements SoapInterface
                 'Unable to save temporary key files in folder.'
             );
         }
+
+        $this->removeTemporarilyFiles();
     }
 
     /**
@@ -478,11 +485,11 @@ abstract class SoapBase implements SoapInterface
         $now = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $time = substr($now->format("ymdHisu"), 0, 16);
         try {
-            $this->filesystem->write(
+            $this->filesystem->put(
                 $this->debugdir . $time . "_" . $operation . "_sol.txt",
                 $request
             );
-            $this->filesystem->write(
+            $this->filesystem->put(
                 $this->debugdir . $time . "_" . $operation . "_res.txt",
                 $response
             );
