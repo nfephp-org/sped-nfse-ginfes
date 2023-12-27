@@ -21,6 +21,7 @@
         "php" : ">= 7.1",
         "jvkrypton/sped-common" : "^5.0",
         "justinrainbow/json-schema": "^5.2",
+        "league/flysystem": "^3.23",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-openssl": "*",
