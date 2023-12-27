@@ -19,7 +19,7 @@
     ],
     "require": {
         "php" : ">= 7.1",
-        "jvkrypton/sped-common" : "*",
+        "jvkrypton/sped-common" : "dev-master",
         "justinrainbow/json-schema": "^5.2",
         "league/flysystem": "^3.23",
         "ext-zlib": "*",
