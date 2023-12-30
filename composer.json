@@ -1,9 +1,9 @@
 {
-    "name": "nfephp-org/sped-nfse-ginfes",
+    "name": "jvkrypton/sped-nfse-ginfes",
     "type": "library",
     "description": "API para geração e comunicação de RPS e NFSe no padão Ginfes.",
     "keywords": ["nfe","nfse","sped","nfephp"],
-    "homepage": "https://github.com/nfephp-org/sped-nfse-ginfes",
+    "homepage": "https://github.com/jvkrypton/sped-nfse-ginfes",
     "license": ["LGPL-3.0-or-later", "GPL-3.0-or-later", "MIT"],
     "authors": [
         {
@@ -14,13 +14,13 @@
         },
         {
             "name": "Comunidade NFePHP",
-            "homepage": "https://github.com/nfephp-org/sped-nfe/graphs/contributors"
+            "homepage": "https://github.com/jvkrypton/sped-nfe/graphs/contributors"
         }
     ],
     "require": {
         "php" : ">= 7.1",
-        "nfephp-org/sped-common" : "^5.0",
         "justinrainbow/json-schema": "^5.2",
+        "league/flysystem": "^3.23",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-openssl": "*",
